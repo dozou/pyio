@@ -50,10 +50,9 @@ class AiControlView(QWidget):
         if not self.device:
             print("デバイスが見つかりません")
             return None
-        for key, device in self.device.items():
-            device.setConfigAI(hzAcq=int(self.sample_rate.get_value()),
-                                    nSamples=int(self.sample_num.get_value()))
-            device.startAI(thread_mode=True)
+        self.device.setConfigAI(hzAcq=int(self.sample_rate.get_value()),
+                                nSamples=int(self.sample_num.get_value()))
+        self.device.startAI(thread_mode=True)
 
     def calc_status(self):
         sampleRate = self.sample_rate.get_value()
@@ -97,9 +96,8 @@ class AoControlView(QWidget):
     def update_ao(self):
         (start, stop) = self.range_sweep.get_value()
         v = float(self.amp_line.get_value())
-        for key, device in self.device.items():
-            device.createSweep(startHz=start, stopHz=stop, sweepSec=0.025, outVoltage=v)
-            device.startAO()
+        self.device.createSweep(startHz=start, stopHz=stop, sweepSec=0.025, outVoltage=v)
+        self.device.startAO()
 
 
 class DeviceManagerWindow(QWidget):
@@ -108,24 +106,20 @@ class DeviceManagerWindow(QWidget):
         super(DeviceManagerWindow, self).__init__(parent=parent)
         self.setWindowTitle("デバイスマネージャ")
         self.discovery_button = QPushButton("接続")
-        self.discovery_button.clicked.connect(self.start_device)
+        self.discovery_button.clicked.connect(self.start_discovery)
 
-        self.device_select_box = []
-        device_count = get_devices()
-        for i in range(device_count):
-            self.device_select_box.append(QComboBox())
-            for j in range(device_count):
-                self.device_select_box[i].addItem(get_serial(j))
-            self.device_select_box[i].addItem("update")
-            self.device_select_box[i].currentIndexChanged.connect(self.update_device_list)
+        self.device_select_box = QComboBox()
+        for i in range(get_devices()):
+            self.device_select_box.addItem(get_serial(i))
+        self.device_select_box.addItem("update")
+        self.device_select_box.currentIndexChanged.connect(self.update_device_list)
 
         self.discovery = None
         self.control_view = None
         layout = QHBoxLayout()
         sub_layout = QVBoxLayout()
         sub_layout.addWidget(QLabel("<b>AnalogDiscovery2</b>"))
-        for i in range(device_count):
-            sub_layout.addWidget(self.device_select_box[i])
+        sub_layout.addWidget(self.device_select_box)
         sub_layout.addWidget(self.discovery_button)
         sub_layout.addStretch()
 
@@ -138,38 +132,34 @@ class DeviceManagerWindow(QWidget):
         self.setLayout(layout)
 
     def update_device_list(self):
-        devices_count = get_devices()
-        for i in range(devices_count):
-            if self.device_select_box[i].currentText() == 'update':
-                self.device_select_box[i].clear()
-                for j in range(devices_count):
-                    self.device_select_box[i].addItem(get_serial(j))
-                self.device_select_box[i].addItem("update")
+        if self.device_select_box.currentText() == 'update':
+            self.device_select_box.clear()
+            for i in range(get_devices()):
+                self.device_select_box.addItem(get_serial(i))
+            self.device_select_box.addItem("update")
 
     def set_device(self, device):
         self.discovery = device
         self.ao_control.set_device(device)
         self.ai_control.set_device(device)
 
-    def start_device(self):
-        for key, device in self.discovery.items():
-            index = get_device_index(key)
-            device.openDevice(get_device_index(self.device_select_box[index].currentText()))
-        self.discovery_button.disconnect()
-        self.discovery_button.clicked.connect(self.stop_device)
-        self.discovery_button.setText("接続済み")
+    def start_discovery(self):
+        if get_devices() > 0:
+            self.discovery.openDevice(get_device_index(self.device_select_box.currentText()))
+            self.discovery_button.disconnect()
+            self.discovery_button.clicked.connect(self.stop_discovery)
+            self.discovery_button.setText("接続済み")
 
-    def stop_device(self):
-        for key, device in self.discovery.items():
-            device.closeDevice()
+    def stop_discovery(self):
+        self.discovery.closeDevice()
         self.discovery_button.disconnect()
-        self.discovery_button.clicked.connect(self.start_device)
+        self.discovery_button.clicked.connect(self.start_discovery)
         self.discovery_button.setText("接続")
 
-    def get_device(self):
+    def get_discovery(self):
         return self.discovery
 
-    def get_device_status(self):
+    def get_discovery_status(self):
         if self.discovery_button.text() == "接続済み":
             return True
         return False

@@ -1,11 +1,10 @@
 <map id="クラス階層図" name="クラス階層図">
-<area shape="rect" id="node1" href="$class_window_1_1_device_window_1_1_ai_control_view.html" title="Window.DeviceWindow.AiControlView" alt="" coords="5,192,252,217"/>
+<area shape="rect" id="node1" href="$class_window_1_1_device_window_1_1_ai_control_view.html" title="Window.DeviceWindow.AiControlView" alt="" coords="5,167,252,192"/>
 <area shape="rect" id="node2" href="$class_window_1_1_device_window_1_1_ao_control_view.html" title="Window.DeviceWindow.AoControlView" alt="" coords="300,5,551,31"/>
 <area shape="rect" id="node3" href="$class_window_1_1_device_window_1_1_device_manager_window.html" title="Window.DeviceWindow.Device\lManagerWindow" alt="" coords="323,55,527,93"/>
 <area shape="rect" id="node4" href="$class_window_1_1_line_edit_1_1_label_on_line_edit.html" title="Window.LineEdit.LabelOnLineEdit" alt="" coords="314,117,536,143"/>
 <area shape="rect" id="node5" href="$class_window_1_1_line_edit_1_1_label_on_spin_box.html" title="Window.LineEdit.LabelOnSpinBox" alt="" coords="313,167,537,192"/>
 <area shape="rect" id="node6" href="$class_window_1_1_line_edit_1_1_range_view.html" title="Window.LineEdit.RangeView" alt="" coords="329,216,521,241"/>
-<area shape="rect" id="node7" href="$class_window_1_1_logger_1_1_recorder.html" title="Window.Logger.Recorder" alt="" coords="340,265,511,291"/>
-<area shape="rect" id="node8" href="$class_window_1_1_setting_window_1_1_manage_work_direcory.html" title="Window.SettingWindow.Manage\lWorkDirecory" alt="" coords="319,315,531,353"/>
-<area shape="rect" id="node9" href="$class_window_1_1_setting_window_1_1_setting_window.html" title="Window.SettingWindow.Setting\lWindow" alt="" coords="323,377,528,416"/>
+<area shape="rect" id="node7" href="$class_window_1_1_setting_window_1_1_manage_work_direcory.html" title="Window.SettingWindow.Manage\lWorkDirecory" alt="" coords="319,265,531,304"/>
+<area shape="rect" id="node8" href="$class_window_1_1_setting_window_1_1_setting_window.html" title="Window.SettingWindow.Setting\lWindow" alt="" coords="323,328,528,367"/>
 </map>

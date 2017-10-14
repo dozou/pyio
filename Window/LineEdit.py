@@ -2,6 +2,7 @@
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from PyQt5.QtChart import *
 
 
 class RangeView(QWidget):

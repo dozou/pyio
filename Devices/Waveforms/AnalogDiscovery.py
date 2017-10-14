@@ -182,12 +182,20 @@ class AnalogDiscovery2:
 
 
 def get_connection_count_analog_discovery2():
+    """
+    @return: 現在，接続されているAD2の数を整数値で返す
+    """
     devices = c_int()
     dwf.FDwfEnum(c_int(0), byref(devices))
     return devices.value
 
 
 def get_serial_analog_discovery2(device_index: int):
+    """
+
+    @param device_index: 接続されているAD2のデバイス接続ID
+    @return: 渡されたデバイスIDに対応するシリアルナンバーを返す
+    """
     device_index = c_int(device_index)
     serial_num = create_string_buffer(16)
     dwf.FDwfEnumSN(device_index, serial_num)
@@ -198,6 +206,11 @@ def get_serial_analog_discovery2(device_index: int):
 
 
 def get_index_analog_discovery2(serial_num: str):
+    """
+
+    @param serial_num: 任意のAD2のシリアルナンバー
+    @return: シリアルナンバーに対応した接続IDを整数値で返却
+    """
     for i in range(get_connection_count_analog_discovery2()):
         if get_serial_analog_discovery2(i) == serial_num:
             return i

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['queue',['Queue',['../class_tools_1_1data__structure_1_1_queue.html',1,'Tools::data_structure']]]
+  ['settingwindow',['SettingWindow',['../class_window_1_1_setting_window_1_1_setting_window.html',1,'Window::SettingWindow']]]
 ];

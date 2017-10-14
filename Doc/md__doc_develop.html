@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Pybration: aaaaaa</title>
+<title>Pybration: 開発にあたっての注意点</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,10 +59,31 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">aaaaaa </div>  </div>
+<div class="title">開発にあたっての注意点 </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>dsfjhsadjklfhksadhfklasdf </p>
+<div class="textblock"><h2>pybration上のソフトウェア開発</h2>
+<h3>GUI関連に関して</h3>
+<p>PyQtを用いて開発を行なっています． PyQtに関しては<a href="https://wiki.python.org/moin/PyQt">こちら</a>を参照してください．</p>
+<h3>ディレクトリ構成</h3>
+<ul>
+<li>**/pluginディレクトリ** pybration上でソフトウェア開発を行う場合, pluginディレクトリ内に 各自製作するファイルを入れること</li>
+<li>**/Doc** ドキュメント類が入ってます．/Doc/index.htmlをブラウザで開いてください．</li>
+</ul>
+<h2>コーディング規約</h2>
+<ol type="1">
+<li><b>pep8</b> pep8に準拠したコーディングを行いましょう <a href="http://pep8-ja.readthedocs.io/ja/latest/">pep8</a> についてはこちら</li>
+</ol>
+<h3>命名規則</h3>
+<ol type="1">
+<li><b>クラス名　構造体名 -&gt; パスカルケース</b> 最初の文字を大文字にして単語どうしをつなげる書き方． <em>TestExampleClass</em> のように単語の１文字目を大きくし， つなげて書きましょう</li>
+</ol>
+<ol type="1">
+<li><b>メソッド名　メンバ変数 -&gt; スネークケース</b> 「_」で単語をつなぐ書き方 _test_example_method_　のような書き方にしましょう</li>
+</ol>
+<ol type="1">
+<li>**ファイル名（ソースコード）-&gt; メインクラスと同じもの パスカル記法と同様になる筈です． </li>
+</ol>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

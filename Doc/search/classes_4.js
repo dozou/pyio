@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['labelonlineedit',['LabelOnLineEdit',['../class_window_1_1_line_edit_1_1_label_on_line_edit.html',1,'Window::LineEdit']]],
-  ['labelonspinbox',['LabelOnSpinBox',['../class_window_1_1_line_edit_1_1_label_on_spin_box.html',1,'Window::LineEdit']]]
+  ['manageworkdirecory',['ManageWorkDirecory',['../class_window_1_1_setting_window_1_1_manage_work_direcory.html',1,'Window::SettingWindow']]]
 ];

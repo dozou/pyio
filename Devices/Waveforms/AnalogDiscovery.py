@@ -183,6 +183,7 @@ class AnalogDiscovery2:
 
 def get_connection_count_analog_discovery2():
     """
+    test
     @return: 現在，接続されているAD2の数を整数値で返す
     """
     devices = c_int()
@@ -222,7 +223,7 @@ if __name__ == "__main__":
     print("接続されたデバイス数:"+str(devices))
 
     for i in range(devices):
-        print(str(i) +" SN: " + get_serial_analog_discovery2(i))
+        print(str(i) + " SN: " + get_serial_analog_discovery2(i))
 
     device = AnalogDiscovery2()
 

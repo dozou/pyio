@@ -164,7 +164,7 @@ class AnalogDiscovery2:
         sweepSec = float(sweepSec)
         dwf.FDwfAnalogOutNodeEnableSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_bool(True))
         dwf.FDwfAnalogOutNodeFunctionSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, dwfc.funcSine)
-        dwf.FDwfAnalogOutNodeSymmetrySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(0))
+        dwf.FDwfAnalogOutNodeSymmetrySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(50))
         dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double((stopHz+startHz)/2))
         dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
         dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(0))

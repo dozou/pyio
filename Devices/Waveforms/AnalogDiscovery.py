@@ -38,6 +38,7 @@ class AnalogDiscovery2:
         self.ai_th = None
         self.check_ai_th = True
         self.ai_data = None
+        self.rad_samples = (c_double*4096)()
 
     def view_version(self):
         version = create_string_buffer(16)
@@ -175,6 +176,26 @@ class AnalogDiscovery2:
         dwf.FDwfAnalogOutNodeSymmetrySet(self.hdwf, channel, dwfc.AnalogOutNodeFM, c_double(100))
         dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel, dwfc.AnalogOutNodeFM, c_double(0))
 
+    def create_sine_wave(self, outputWave, outVoltage=1.0, channel=0):
+        channel = c_int(channel)
+        outputWave = float(outputWave)
+        dwf.FDwfAnalogOutNodeEnableSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_bool(True))
+        dwf.FDwfAnalogOutNodeFunctionSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, dwfc.funcSine)
+        dwf.FDwfAnalogOutNodeSymmetrySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(50))
+        dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outputWave))
+        dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
+        dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(0))
+
+    def create_custom_wave(self, customWave, radSamples, outVoltage=1.0, channel=0):
+        channel = c_int(channel)
+        dwf.FDwfAnalogOutNodeEnableSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_bool(True))
+        dwf.FDwfAnalogOutNodeFunctionSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, dwfc.funcCustom)
+        dwf.FDwfAnalogOutNodeDataSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, radSamples, c_int(4096))
+        dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(30000.0))
+        dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
+        dwf.FDwfAnalogOutConfigure(self.hdwf, channel, c_bool(True))
+
+
     def __del__(self):
         self.close_device()
         self.check_ai = False
@@ -218,6 +239,7 @@ def get_index_analog_discovery2(serial_num: str):
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    import numpy as np
 
     devices = get_connection_count_analog_discovery2()
     print("接続されたデバイス数:"+str(devices))
@@ -231,7 +253,8 @@ if __name__ == "__main__":
 
     device.open_device()
 
-    device.create_sweep(startHz=1000, stopHz=3000, sweepSec=0.05)
+    # device.create_sine_wave(1000)
+    device.create_sweep(startHz=500, stopHz=500, sweepSec=0.05)
     device.start_ao(channel=0)
     device.set_config_ai(nSamples=8192, hzAcq=163840, mode=dwfc.acqmodeScanScreen)
     device.start_ai(thread_mode=True)
@@ -248,8 +271,7 @@ if __name__ == "__main__":
             break
         hl.set_ydata(device.ai_data[0])
         plt.draw()
-        plt.pause(0.03)
+        plt.pause(0.025)
 
     device.stop_ai()
     device.close_device()
-

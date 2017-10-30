@@ -186,14 +186,18 @@ class AnalogDiscovery2:
         dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
         dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(0))
 
-    def create_custom_wave(self, customWave, radSamples, outVoltage=1.0, channel=0):
+    def create_custom_wave(self, customWave, period, outVoltage=1.0, channel=0):
+        samples = (c_double*len(customWave))()
+
+        for i,data in enumerate(customWave):
+            samples[i] = c_double(data)
+
         channel = c_int(channel)
         dwf.FDwfAnalogOutNodeEnableSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_bool(True))
         dwf.FDwfAnalogOutNodeFunctionSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, dwfc.funcCustom)
-        dwf.FDwfAnalogOutNodeDataSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, radSamples, c_int(4096))
-        dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(30000.0))
+        dwf.FDwfAnalogOutNodeDataSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, samples, c_int(len(customWave)))
+        dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(period))
         dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
-        dwf.FDwfAnalogOutConfigure(self.hdwf, channel, c_bool(True))
 
 
     def __del__(self):
@@ -253,8 +257,16 @@ if __name__ == "__main__":
 
     device.open_device()
 
+    """
+    出力用サンプル
+    """
+    ### カスタム出力 ###
+    wave = [1.0 * (i / 4095 - 1) for i in range(4095)]  # リスト内包表記
+    device.create_custom_wave(wave, 100)
+    ### 単振動出力 ###
     # device.create_sine_wave(1000)
-    device.create_sweep(startHz=500, stopHz=500, sweepSec=0.05)
+    ### スイープ出力 ###
+    # device.create_sweep(startHz=500, stopHz=500, sweepSec=0.05)
     device.start_ao(channel=0)
     device.set_config_ai(nSamples=8192, hzAcq=163840, mode=dwfc.acqmodeScanScreen)
     device.start_ai(thread_mode=True)

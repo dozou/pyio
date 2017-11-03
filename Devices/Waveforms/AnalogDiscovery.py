@@ -186,6 +186,16 @@ class AnalogDiscovery2:
         dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
         dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(0))
 
+    def create_square_wave(self, outputWave, outVoltage=1.0, channel=0):
+        channel = c_int(channel)
+        outputWave = float(outputWave)
+        dwf.FDwfAnalogOutNodeEnableSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_bool(True))
+        dwf.FDwfAnalogOutNodeFunctionSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, dwfc.funcSquare)
+        dwf.FDwfAnalogOutNodeSymmetrySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(50))
+        dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outputWave))
+        dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
+        dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(0))
+
     def create_custom_wave(self, customWave, period, outVoltage=1.0, channel=0):
         samples = (c_double*len(customWave))()
 
@@ -198,7 +208,7 @@ class AnalogDiscovery2:
         dwf.FDwfAnalogOutNodeDataSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, samples, c_int(len(customWave)))
         dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(period))
         dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
-
+        dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(0))
 
     def __del__(self):
         self.close_device()
@@ -241,6 +251,7 @@ def get_index_analog_discovery2(serial_num: str):
         if get_serial_analog_discovery2(i) == serial_num:
             return i
 
+
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     import numpy as np
@@ -261,25 +272,27 @@ if __name__ == "__main__":
     出力用サンプル
     """
     ### カスタム出力 ###
-    wave = [1.0 * (i / 4095 - 1) for i in range(4095)]  # リスト内包表記
-    device.create_custom_wave(wave, 100)
+    # wave = [(1.0 * (i / (4095 - 1))) - 0.5 for i in range(4095)]  # リスト内包表記
+    wave = [2 if i < 2000 else 0 for i in range(4000)]
+    device.create_custom_wave(wave, 100, 5)
     ### 単振動出力 ###
-    # device.create_sine_wave(1000)
+    # device.create_sine_wave(1000, outVoltage=3)
     ### スイープ出力 ###
-    # device.create_sweep(startHz=500, stopHz=500, sweepSec=0.05)
+    # device.create_sweep(startHz=100, stopHz=300, sweepSec=0.05)
     device.start_ao(channel=0)
     device.set_config_ai(nSamples=8192, hzAcq=163840, mode=dwfc.acqmodeScanScreen)
     device.start_ai(thread_mode=True)
 
-    plt.axis([0, 8192, -2, 2])
+    plt.axis([0, 8192, -4.2, 4.2])
     plt.ion()
     hl, = plt.plot([], [])
     hl.set_xdata(list(range(0, device.samples)))
 
+    print()
     i = int(0)
     while True:
         i += 1
-        if i == 100:
+        if i == 10000:
             break
         hl.set_ydata(device.ai_data[0])
         plt.draw()

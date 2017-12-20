@@ -6,13 +6,14 @@ from yapsy.PluginInfo import PluginInfo
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import datetime
+import time
 
 
 class MainWindow(QWidget):
-    face_data = ["（｀･ω･´）", "（&nbsp;&nbsp;&nbsp;&nbsp;｀･ω）", "（&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;｀･）",
+    face_data = ["（｀･ω･´）", "（｀･ω･´）", "（&nbsp;&nbsp;&nbsp;&nbsp;｀･ω）", "（&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;｀･）",
                  "（&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）",
                  "（･`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）",
-                 "（ω･`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）", "（&nbsp;´･ω･`&nbsp;）"]  # 後ろがおになった時に時刻表示
+                 "（ω･`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）", "（&nbsp;´･ω･`&nbsp;）"]  # 前を向いてる顔になった時に時刻表示
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -36,8 +37,10 @@ class MainWindow(QWidget):
         self.date.setFixedHeight(20)  # 高さ固定
         self.update_layout()
 
+        # self.wait_0_microsecond()
+
         self.timer = QTimer()
-        self.timer.setInterval(200)
+        self.timer.setInterval(125)
         self.timer.timeout.connect(self.timeout)
         self.timer.start()
         self.face_rote = 0
@@ -53,10 +56,11 @@ class MainWindow(QWidget):
 
     """
         ショボーンを回転させるためのメソッドです
-        200[msec]間隔で更新しています
+        125[msec]間隔で更新しています
     """
 
     def timeout(self):
+
         if len(self.face_data) == self.face_rote:
             self.face_rote = 0
         self.face.setText('<div align="center">'  # Qtスバラ！！HTML指定できるんすよ！！
@@ -75,12 +79,29 @@ class MainWindow(QWidget):
 
     def time_draw(self):
         d = datetime.datetime.today()
-        # daystr = d.strftime("%Y-%m-%d %H:%M:%S")
-        daystr = d.strftime("%Y-%m-%d %H:%M")
+        day_time_str = d.strftime("%Y-%m-%d %H:%M:%S")
         self.date.setText('<div>'
-                          + daystr
+                          + day_time_str
                           + '</div>'
                          )
+
+    """
+    時刻表示のタイミングを(無理やり)合わせるためのメソッド
+    """
+
+    def wait_0_microsecond(self):
+        print("Adjust the time... Please Waiting...")
+        wait_s = 0.0000001
+        wait_count = 0
+        while True:
+            d = datetime.datetime.today()
+            if d.microsecond == 0.0:
+                print("wait : " + str(wait_count))
+                break
+
+            time.sleep(wait_s)
+            wait_count += 1
+
 
 if __name__ == "__main__":
     myApp = QApplication(sys.argv)

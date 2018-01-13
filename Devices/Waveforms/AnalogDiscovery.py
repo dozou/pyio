@@ -196,19 +196,19 @@ class AnalogDiscovery2:
         dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel.value, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
         dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel.value, dwfc.AnalogOutNodeCarrier, c_double(0))
 
-    def create_custom_wave(self, customWave, period, outVoltage=1.0, channel=Echannel.ch_1):
+    def create_custom_wave(self, customWave, period, outVoltage=1.0, channel=0):
         samples = (c_double*len(customWave))()
 
         for i,data in enumerate(customWave):
             samples[i] = c_double(data)
 
-        #channel = c_int(channel)
-        dwf.FDwfAnalogOutNodeEnableSet(self.hdwf, channel.value, dwfc.AnalogOutNodeCarrier, c_bool(True))
-        dwf.FDwfAnalogOutNodeFunctionSet(self.hdwf, channel.value, dwfc.AnalogOutNodeCarrier, dwfc.funcCustom)
-        dwf.FDwfAnalogOutNodeDataSet(self.hdwf, channel.value, dwfc.AnalogOutNodeCarrier, samples, c_int(len(customWave)))
-        dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel.value, dwfc.AnalogOutNodeCarrier, c_double(period))
-        dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel.value, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
-        dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel.value, dwfc.AnalogOutNodeCarrier, c_double(0))
+        channel = c_int(channel)
+        dwf.FDwfAnalogOutNodeEnableSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_bool(True))
+        dwf.FDwfAnalogOutNodeFunctionSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, dwfc.funcCustom)
+        dwf.FDwfAnalogOutNodeDataSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, samples, c_int(len(customWave)))
+        dwf.FDwfAnalogOutNodeFrequencySet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(period))
+        dwf.FDwfAnalogOutNodeAmplitudeSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(outVoltage))
+        dwf.FDwfAnalogOutNodeOffsetSet(self.hdwf, channel, dwfc.AnalogOutNodeCarrier, c_double(0))
 
     def __del__(self):
         self.close_device()
@@ -282,8 +282,7 @@ if __name__ == "__main__":
     # device.create_sine_wave(1000, outVoltage=3)
     ### スイープ出力 ###
     # device.create_sweep(startHz=100, stopHz=300, sweepSec=0.05)
-    device.start_ao(channel=Echannel.ch_1)
-    device.start_ao(channel=Echannel.ch_2)
+    device.start_ao(channel=0)
     device.set_config_ai(nSamples=8192, hzAcq=163840, mode=dwfc.acqmodeScanScreen)
     device.start_ai(thread_mode=True)
 
@@ -296,12 +295,11 @@ if __name__ == "__main__":
     i = int(0)
     while True:
         i += 1
-        if i == 100:
+        if i == 10000:
             break
         hl.set_ydata(device.ai_data[0])
         plt.draw()
         plt.pause(0.025)
-    device.create_custom_wave(customWave=zero, period=0, outVoltage=5, channel=Echannel.ch_1)
-    device.create_custom_wave(customWave=zero, period=0, outVoltage=5, channel=Echannel.ch_2)
+
     device.stop_ai()
     device.close_device()

@@ -1,7 +1,0 @@
-[Core]
-Name = Hello2
-Module = hello
-
-[Documentation]
-Author = John Smith
-Version = 0.1

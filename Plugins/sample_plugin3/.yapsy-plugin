@@ -1,7 +1,0 @@
-[Core]
-Name = Hello3
-Module = hello
-
-[Documentation]
-Author = John Smith
-Version = 0.1

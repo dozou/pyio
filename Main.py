@@ -1,10 +1,12 @@
-# coding:utf-8
+#coding:utf-8
 import sys
 import os
 from yapsy.PluginManager import PluginManager
 from yapsy.PluginInfo import PluginInfo
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from Window.DeviceWindow import *
+from DataSturucture import *
 import datetime
 import time
 
@@ -17,21 +19,30 @@ class MainWindow(QWidget):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        manager = PluginManager()
+        self.data = DataContainer()
+        self.manager = PluginManager()
 
-        manager.setPluginPlaces([os.path.join(os.path.dirname(__file__), "Plugins")])
-        manager.collectPlugins()
+        self.manager.setPluginPlaces([os.path.join(os.path.dirname(__file__), "Plugins")])
+        self.manager.collectPlugins()
         print(os.path.dirname(__file__))
-        print(str(len(manager.getAllPlugins())))
         self.setWindowTitle("Pybration")
         self.face = QLabel()
+        self.setting_manager = DeviceManagerWindow(parent)
         # self.face.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
         self.face.setFixedHeight(20)  # 高さ固定
         self.face.setText(self.face_data[0])
         self.device_maneger_button = QPushButton("設定")
+        self.device_maneger_button.clicked.connect(self.setting_manager.show)
+
+        self.data.device = self.setting_manager.device
+
         self.plugin_button = []
-        for plugin in manager.getAllPlugins():
+        self.plugin_start_func = []
+
+        for i, plugin in enumerate(self.manager.getAllPlugins()):
             self.plugin_button.append(QPushButton(str(plugin.name)))
+            self.plugin_button[i].clicked.connect(plugin.plugin_object.run)
+            plugin.plugin_object.set_parent_data(self.data)
         self.date = QLabel()
         # self.date.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
         self.date.setFixedHeight(20)  # 高さ固定
@@ -53,6 +64,9 @@ class MainWindow(QWidget):
             layout.addWidget(self.plugin_button[i])
         layout.addWidget(self.date)
         self.setLayout(layout)
+
+    def call_test(self):
+        print("TEST_CALL")
 
     """
         ショボーンを回転させるためのメソッドです
@@ -101,6 +115,9 @@ class MainWindow(QWidget):
 
             time.sleep(wait_s)
             wait_count += 1
+
+    def closeEvent(self, a0):
+        quit()
 
 
 if __name__ == "__main__":

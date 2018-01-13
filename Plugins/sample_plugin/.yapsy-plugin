@@ -1,7 +1,9 @@
 [Core]
-Name = Hello
+Name = SamplePlugin
 Module = hello
+Categories = rwr
 
 [Documentation]
-Author = John Smith
+Author = Nobunobu
 Version = 0.1
+Categories = rwr

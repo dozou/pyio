@@ -53,7 +53,7 @@ class AiControlView(QWidget):
         for key, device in enumerate(self.device):
             device.set_config_ai(hzAcq=int(self.sample_rate.get_value()),
                                     nSamples=int(self.sample_num.get_value()))
-            device.start_ai(thread_mode=True)
+            device.start_ai(thread_mode=True, channel=Echannel.ch_all)
 
     def calc_status(self):
         sampleRate = self.sample_rate.get_value()
@@ -167,8 +167,6 @@ class DeviceManagerWindow(QWidget):
         for key, dev in enumerate(self.device):
             self.device[key].close_device()
             print("CLOSE_DEVICE'"+str(key) + ":" + self.device[key].get_serial() +"'")
-        all_close_analog_discovery2()
-        all_close_analog_discovery2()
         self.discovery_button.disconnect()
         self.discovery_button.clicked.connect(self.start_device)
         self.discovery_button.setText("接続")

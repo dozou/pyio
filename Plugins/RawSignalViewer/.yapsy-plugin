@@ -1,5 +1,5 @@
 [Core]
-Name = FFTViewer
+Name = RawSignalViewer
 Module = Viewer
 Categories = rwr
 

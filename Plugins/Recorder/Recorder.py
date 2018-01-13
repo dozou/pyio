@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import threading
+import time
 from PyQt5.QtWidgets import *
 from yapsy.IPlugin import IPlugin
 from Window.LineEdit import *
@@ -33,6 +34,7 @@ class Viewer(QWidget):
         self.record_button.clicked.connect(self.start_record)
         self.clear_button = QPushButton("初期化")
         self.clear_button.clicked.connect(self.clear_data)
+        self.write_format_checkbox = QCheckBox(text="Pkl保存")
         self.write_button = QPushButton("書き出し")
         self.write_button.clicked.connect(self.write_csv)
         self.data_cnt_text = QLabel("Samples:"+str(self.data_cnt))
@@ -47,6 +49,7 @@ class Viewer(QWidget):
         sub_layout.addWidget(self.clear_button)
         sub_layout.addWidget(self.write_button)
         sub_layout.addWidget(self.data_cnt_text)
+        sub_layout.addWidget(self.write_format_checkbox)
         sub_layout.addWidget(self.file_name_line)
         main_layout.addLayout(sub_layout)
         self.setLayout(main_layout)
@@ -100,7 +103,7 @@ class Viewer(QWidget):
         while self.check_loop:
             if self.size_checkbox.isChecked() and self.size_line.get_value() <= self.data_cnt:
                 break
-
+            time.sleep(self.timeout_line.get_value() / 1000.0)
             self.rec_update()
         self.stop_record()
 
@@ -126,12 +129,21 @@ class Viewer(QWidget):
 
     def write_csv(self):
         for i, dev in enumerate(self.device):
-            wave_data = pd.DataFrame(self.wave_data_ch1[i])
-            raw_file_name = self.file_name_line.get_value()
-            wave_data.to_csv(raw_file_name+"_dev"+str(i)+'_ch1_wave.csv')
-            wave_data = pd.DataFrame(self.wave_data_ch2[i])
-            raw_file_name = self.file_name_line.get_value()
-            wave_data.to_csv(raw_file_name+"_dev"+str(i)+'_ch2_wave.csv')
+            if self.write_format_checkbox.isChecked():
+                wave_data = pd.DataFrame(self.wave_data_ch1[i])
+                raw_file_name = self.file_name_line.get_value()
+                wave_data.to_pickle(raw_file_name+"_dev"+str(i)+'_ch1_wave.pkl')
+
+                wave_data = pd.DataFrame(self.wave_data_ch2[i])
+                raw_file_name = self.file_name_line.get_value()
+                wave_data.to_pickle(raw_file_name+"_dev"+str(i)+'_ch2_wave.pkl')
+            else:
+                wave_data = pd.DataFrame(self.wave_data_ch1[i])
+                raw_file_name = self.file_name_line.get_value()
+                wave_data.to_csv(raw_file_name+"_dev"+str(i)+'_ch1_wave.csv')
+                wave_data = pd.DataFrame(self.wave_data_ch2[i])
+                raw_file_name = self.file_name_line.get_value()
+                wave_data.to_csv(raw_file_name+"_dev"+str(i)+'_ch2_wave.csv')
 
 
 class Recorder(IPlugin, Plugin):

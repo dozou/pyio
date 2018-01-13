@@ -117,6 +117,8 @@ class MainWindow(QWidget):
             wait_count += 1
 
     def closeEvent(self, a0):
+        for dev in self.data.device:
+            dev.close_device()
         quit()
 
 

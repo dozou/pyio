@@ -61,7 +61,7 @@ class AnalogDiscovery2:
             self.is_open_device = c_bool(False)
 
     def is_open(self):
-        dwf.FDwfEnumDeviceIsOpened(self.device_index, byref(self.is_open_device))
+        # dwf.FDwfEnumDeviceIsOpened(self.device_index, byref(self.is_open_device))
         return self.is_open_device
 
     def is_start_ai(self):

@@ -21,7 +21,8 @@ C++の修行は数十年かかるからPython使おうぜ！！
 ### 必須環境 ###
 
 * Python3 -> brewから入れられるよ！！　Lab01のPCでも実行確認済み
-* OSX version =< El capitan (AnalogDiscovery2がSierraに対応してないよ)
+* OSX version =< high sierra対応しちゃってました。  
+ ~~El capitan (AnalogDiscovery2がSierraに対応してないよ)~~
 * WaveForms2015 -> 公式サイトで手に入るよ
 * PyQt5 -> pipで入るよ！！
 * numpy -> pipで

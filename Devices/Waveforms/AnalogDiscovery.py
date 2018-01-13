@@ -241,6 +241,10 @@ def get_index_analog_discovery2(serial_num: str):
         if get_serial_analog_discovery2(i) == serial_num:
             return i
 
+
+def all_close_analog_discovery2():
+    dwf.FDwfDeviceCloseAll()
+
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     import numpy as np

@@ -1,7 +1,7 @@
 #coding:utf-8
 
 from Window.LineEdit import *
-from Waveforms.AnalogDiscovery import *
+from Devices.Waveforms.AnalogDiscovery import *
 from PyQt5.QtChart import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -50,9 +50,10 @@ class AiControlView(QWidget):
         if not self.device:
             print("デバイスが見つかりません")
             return None
-        self.device.setConfigAI(hzAcq=int(self.sample_rate.get_value()),
-                                nSamples=int(self.sample_num.get_value()))
-        self.device.start_ai(thread_mode=True)
+        for key, device in enumerate(self.device):
+            device.set_config_ai(hzAcq=int(self.sample_rate.get_value()),
+                                    nSamples=int(self.sample_num.get_value()))
+            device.start_ai(thread_mode=True)
 
     def calc_status(self):
         sampleRate = self.sample_rate.get_value()
@@ -96,8 +97,9 @@ class AoControlView(QWidget):
     def update_ao(self):
         (start, stop) = self.range_sweep.get_value()
         v = float(self.amp_line.get_value())
-        self.device.createSweep(startHz=start, stopHz=stop, sweepSec=0.025, outVoltage=v)
-        self.device.startAO()
+        for key, device in enumerate(self.device):
+            device.create_sweep(startHz=start, stopHz=stop, sweepSec=0.025, outVoltage=v)
+            device.start_ao()
 
 
 class DeviceManagerWindow(QWidget):
@@ -106,25 +108,36 @@ class DeviceManagerWindow(QWidget):
         super(DeviceManagerWindow, self).__init__(parent=parent)
         self.setWindowTitle("デバイスマネージャ")
         self.discovery_button = QPushButton("接続")
-        self.discovery_button.clicked.connect(self.start_discovery)
+        self.discovery_button.clicked.connect(self.start_device)
 
-        self.device_select_box = QComboBox()
-        for i in range(get_devices()):
-            self.device_select_box.addItem(get_serial(i))
-        self.device_select_box.addItem("update")
-        self.device_select_box.currentIndexChanged.connect(self.update_device_list)
+        self.device_select_box = []
+        device_count = get_connection_count_analog_discovery2()
+        for i in range(device_count):
+            self.device_select_box.append(QComboBox())
+            for j in range(device_count):
+                self.device_select_box[i].addItem(get_serial_analog_discovery2(j))
+            self.device_select_box[i].addItem("update")
+            self.device_select_box[i].currentIndexChanged.connect(self.update_device_list)
 
-        self.discovery = None
+        self.device = []
+
+        for i in range(get_connection_count_analog_discovery2()):
+            self.device.append(AnalogDiscovery2())
+
         self.control_view = None
         layout = QHBoxLayout()
         sub_layout = QVBoxLayout()
         sub_layout.addWidget(QLabel("<b>AnalogDiscovery2</b>"))
-        sub_layout.addWidget(self.device_select_box)
+        for i in range(device_count):
+            sub_layout.addWidget(self.device_select_box[i])
         sub_layout.addWidget(self.discovery_button)
         sub_layout.addStretch()
 
         self.ao_control = AoControlView()
         self.ai_control = AiControlView()
+
+        self.ai_control.device = self.device
+        self.ao_control.device = self.device
 
         layout.addLayout(sub_layout)
         layout.addWidget(self.ai_control)
@@ -132,34 +145,38 @@ class DeviceManagerWindow(QWidget):
         self.setLayout(layout)
 
     def update_device_list(self):
-        if self.device_select_box.currentText() == 'update':
-            self.device_select_box.clear()
-            for i in range(get_devices()):
-                self.device_select_box.addItem(get_serial(i))
-            self.device_select_box.addItem("update")
+        devices_count = get_connection_count_analog_discovery2()
+        for i in range(devices_count):
+            if self.device_select_box[i].currentText() == 'update':
+                self.device_select_box[i].clear()
+                for j in range(devices_count):
+                    self.device_select_box[i].addItem(get_serial_analog_discovery2(j))
+                self.device_select_box[i].addItem("update")
 
-    def set_device(self, device):
-        self.discovery = device
-        self.ao_control.set_device(device)
-        self.ai_control.set_device(device)
-
-    def start_discovery(self):
-        if get_devices() > 0:
-            self.discovery.openDevice(get_device_index(self.device_select_box.currentText()))
-            self.discovery_button.disconnect()
-            self.discovery_button.clicked.connect(self.stop_discovery)
-            self.discovery_button.setText("接続済み")
-
-    def stop_discovery(self):
-        self.discovery.closeDevice()
+    def start_device(self):
+        for index, combo_box in enumerate(self.device_select_box):
+            print("OPEN_DEVICE'"+str(index)+":"+combo_box.currentText()+"'")
+            self.device[index].open_device(get_index_analog_discovery2(combo_box.currentText()))
+            # index = get_index_analog_discovery2(key)
+            # dev.open_device(get_index_analog_discovery2(self.device_select_box[index].currentText()))
         self.discovery_button.disconnect()
-        self.discovery_button.clicked.connect(self.start_discovery)
+        self.discovery_button.clicked.connect(self.stop_device)
+        self.discovery_button.setText("接続済み")
+
+    def stop_device(self):
+        for key, dev in enumerate(self.device):
+            self.device[key].close_device()
+            print("CLOSE_DEVICE'"+str(key) + ":" + self.device[key].get_serial() +"'")
+        all_close_analog_discovery2()
+        all_close_analog_discovery2()
+        self.discovery_button.disconnect()
+        self.discovery_button.clicked.connect(self.start_device)
         self.discovery_button.setText("接続")
 
-    def get_discovery(self):
-        return self.discovery
+    def get_device(self):
+        return self.device
 
-    def get_discovery_status(self):
+    def get_device_status(self):
         if self.discovery_button.text() == "接続済み":
             return True
         return False

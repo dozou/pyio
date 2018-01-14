@@ -1,7 +1,7 @@
 #coding:utf-8
 
 from Window.LineEdit import *
-from Devices.Waveforms.AnalogDiscovery import *
+from Devices.IODevice import *
 from PyQt5.QtChart import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -14,9 +14,10 @@ class AiControlView(QWidget):
     sample_num = None
     sample_rate = None
 
-    def __init__(self, device=None):
+    def __init__(self, device=None,data:DataContainer=None):
         super(AiControlView, self).__init__()
         self.device = device
+        self.data = data
 
         self.sample_calc_1 = QLabel()
         self.sample_rate = LabelOnSpinBox(label='SampleRate',
@@ -54,6 +55,8 @@ class AiControlView(QWidget):
             device.set_config_ai(hzAcq=int(self.sample_rate.get_value()),
                                     nSamples=int(self.sample_num.get_value()))
             device.start_ai(thread_mode=True, channel=Echannel.ch_all)
+        self.data.parameter["sample_rate"] = self.sample_rate.get_value()
+        self.data.parameter["samples"] = self.sample_num.get_value()
 
     def calc_status(self):
         sampleRate = self.sample_rate.get_value()
@@ -67,7 +70,7 @@ class AoControlView(QWidget):
     amp_line = None
     range_sweep = None
 
-    def __init__(self, device=None):
+    def __init__(self, device=None, data:DataContainer=None):
         super(AoControlView, self).__init__()
         self.device = device
 
@@ -104,7 +107,7 @@ class AoControlView(QWidget):
 
 class DeviceManagerWindow(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, data:DataContainer, parent=None):
         super(DeviceManagerWindow, self).__init__(parent=parent)
         self.setWindowTitle("デバイスマネージャ")
         self.discovery_button = QPushButton("接続")
@@ -122,7 +125,7 @@ class DeviceManagerWindow(QWidget):
         self.device = []
 
         for i in range(get_connection_count_analog_discovery2()):
-            self.device.append(AnalogDiscovery2())
+            self.device.append(IODevice())
 
         self.control_view = None
         layout = QHBoxLayout()
@@ -133,8 +136,8 @@ class DeviceManagerWindow(QWidget):
         sub_layout.addWidget(self.discovery_button)
         sub_layout.addStretch()
 
-        self.ao_control = AoControlView()
-        self.ai_control = AiControlView()
+        self.ao_control = AoControlView(data=data)
+        self.ai_control = AiControlView(data=data)
 
         self.ai_control.device = self.device
         self.ao_control.device = self.device
@@ -143,6 +146,8 @@ class DeviceManagerWindow(QWidget):
         layout.addWidget(self.ai_control)
         layout.addWidget(self.ao_control)
         self.setLayout(layout)
+
+        data.device = self.device
 
     def update_device_list(self):
         devices_count = get_connection_count_analog_discovery2()

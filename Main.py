@@ -27,14 +27,12 @@ class MainWindow(QWidget):
         print(os.path.dirname(__file__))
         self.setWindowTitle("Pybration")
         self.face = QLabel()
-        self.setting_manager = DeviceManagerWindow(parent)
+        self.setting_manager = DeviceManagerWindow(parent=parent, data=self.data)
         # self.face.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
         self.face.setFixedHeight(20)  # 高さ固定
         self.face.setText(self.face_data[0])
         self.device_maneger_button = QPushButton("設定")
         self.device_maneger_button.clicked.connect(self.setting_manager.show)
-
-        self.data.device = self.setting_manager.device
 
         self.plugin_button = []
         self.plugin_start_func = []

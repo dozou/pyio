@@ -37,7 +37,7 @@ class AnalogDiscovery2:
         self.device_index = c_int(0)
         self.ai_th = None
         self.check_ai_th = True
-        self.ai_data = None
+        self.ai_data = []
         self.rad_samples = (c_double*4096)()
 
     def view_version(self):

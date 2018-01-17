@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
-from distutils.core import setup
+from setuptools import setup, find_packages
+
+requires = {"yapsy",
+            "pyqt5",
+            "pyqtchart",
+            "pandas",
+            "matplotlib",
+            "numpy",
+            }
+
 
 setup(
     name="pybration",
-    packages=['pybration'],
-    version="0.0.0",
+    packages=find_packages(),
+    version="0.1.0",
     author="takemuralabs",
     author_email="",
-    url=""
+    url="",
+    install_requires=requires
 )

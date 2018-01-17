@@ -10,9 +10,9 @@ from PyQt5.QtChart import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from yapsy.IPlugin import IPlugin
-from Window.LineEdit import *
-from DataSturucture import *
-from Window.Charts import *
+from pybration.Window.LineEdit import *
+from pybration.DataSturucture import *
+from pybration.Window.Charts import *
 
 
 class FFTContainer(DataContainer):
@@ -116,11 +116,14 @@ class FFTViewer(IPlugin, Plugin):
         super().__init__()
         self.view = None  # type:Viewer
 
-    def run(self):
+    def clicked(self):
         self.view = Viewer(data=self.data)
         self.view.setWindowTitle("FFTViewer")
         self.view.show()
         print(self.data.parameter)
+
+    def enable_button(self):
+        return True
 
 
 

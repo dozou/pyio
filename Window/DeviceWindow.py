@@ -1,7 +1,8 @@
-#coding:utf-8
+# coding:utf-8
 
-from Window.LineEdit import *
-from Devices.IODevice import *
+from pybration.Window.LineEdit import *
+from pybration.Devices.Waveforms.AnalogDiscovery import *
+from pybration.DataSturucture import DataContainer
 from PyQt5.QtChart import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -14,7 +15,7 @@ class AiControlView(QWidget):
     sample_num = None
     sample_rate = None
 
-    def __init__(self, device=None,data:DataContainer=None):
+    def __init__(self, device=None, data: DataContainer = None):
         super(AiControlView, self).__init__()
         self.device = device
         self.data = data
@@ -53,7 +54,7 @@ class AiControlView(QWidget):
             return None
         for key, device in enumerate(self.device):
             device.set_config_ai(hzAcq=int(self.sample_rate.get_value()),
-                                    nSamples=int(self.sample_num.get_value()))
+                                 nSamples=int(self.sample_num.get_value()))
             device.start_ai(thread_mode=True, channel=Echannel.ch_all)
         self.data.parameter["sample_rate"] = self.sample_rate.get_value()
         self.data.parameter["samples"] = self.sample_num.get_value()
@@ -61,7 +62,7 @@ class AiControlView(QWidget):
     def calc_status(self):
         sampleRate = self.sample_rate.get_value()
         sampleNum = self.sample_num.get_value()
-        calc1 = "SampleTime:" + str(round(1000.0*sampleNum/sampleRate, 3)) + " [msec]"
+        calc1 = "SampleTime:" + str(round(1000.0 * sampleNum / sampleRate, 3)) + " [msec]"
         self.sample_calc_1.setText(calc1)
 
 
@@ -70,7 +71,7 @@ class AoControlView(QWidget):
     amp_line = None
     range_sweep = None
 
-    def __init__(self, device=None, data:DataContainer=None):
+    def __init__(self, device=None, data: DataContainer = None):
         super(AoControlView, self).__init__()
         self.device = device
 
@@ -107,7 +108,7 @@ class AoControlView(QWidget):
 
 class DeviceManagerWindow(QWidget):
 
-    def __init__(self, data:DataContainer, parent=None):
+    def __init__(self, data: DataContainer, parent=None):
         super(DeviceManagerWindow, self).__init__(parent=parent)
         self.setWindowTitle("デバイスマネージャ")
         self.discovery_button = QPushButton("接続")
@@ -125,7 +126,7 @@ class DeviceManagerWindow(QWidget):
         self.device = []
 
         for i in range(get_connection_count_analog_discovery2()):
-            self.device.append(IODevice())
+            self.device.append(AnalogDiscovery2())
 
         self.control_view = None
         layout = QHBoxLayout()
@@ -160,7 +161,7 @@ class DeviceManagerWindow(QWidget):
 
     def start_device(self):
         for index, combo_box in enumerate(self.device_select_box):
-            print("OPEN_DEVICE'"+str(index)+":"+combo_box.currentText()+"'")
+            print("OPEN_DEVICE'" + str(index) + ":" + combo_box.currentText() + "'")
             self.device[index].open_device(get_index_analog_discovery2(combo_box.currentText()))
             # index = get_index_analog_discovery2(key)
             # dev.open_device(get_index_analog_discovery2(self.device_select_box[index].currentText()))
@@ -171,7 +172,7 @@ class DeviceManagerWindow(QWidget):
     def stop_device(self):
         for key, dev in enumerate(self.device):
             self.device[key].close_device()
-            print("CLOSE_DEVICE'"+str(key) + ":" + self.device[key].get_serial() +"'")
+            print("CLOSE_DEVICE'" + str(key) + ":" + self.device[key].get_serial() + "'")
         self.discovery_button.disconnect()
         self.discovery_button.clicked.connect(self.start_device)
         self.discovery_button.setText("接続")
@@ -183,4 +184,3 @@ class DeviceManagerWindow(QWidget):
         if self.discovery_button.text() == "接続済み":
             return True
         return False
-

@@ -1,18 +1,19 @@
-#coding:utf-8
+# coding:utf-8
 import sys
 import os
+sys.path.append(os.path.dirname(__file__))
 from yapsy.PluginManager import PluginManager
-from yapsy.PluginInfo import PluginInfo
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from Window.DeviceWindow import *
-from DataSturucture import *
+from pybration.Window.DeviceWindow import *
+from pybration.DataSturucture import *
 import datetime
 import time
 
 
 class MainWindow(QWidget):
-    face_data = ["（｀･ω･´）", "（｀･ω･´）", "（&nbsp;&nbsp;&nbsp;&nbsp;｀･ω）", "（&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;｀･）",
+    face_data = ["（｀･ω･´）", "（｀･ω･´）", "（&nbsp;&nbsp;&nbsp;&nbsp;｀･ω）",
+                 "（&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;｀･）",
                  "（&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）",
                  "（･`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）",
                  "（ω･`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）", "（&nbsp;´･ω･`&nbsp;）"]  # 前を向いてる顔になった時に時刻表示
@@ -31,16 +32,21 @@ class MainWindow(QWidget):
         # self.face.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
         self.face.setFixedHeight(20)  # 高さ固定
         self.face.setText(self.face_data[0])
-        self.device_maneger_button = QPushButton("設定")
-        self.device_maneger_button.clicked.connect(self.setting_manager.show)
+        self.device_manager_button = QPushButton("設定")
+        self.device_manager_button.clicked.connect(self.setting_manager.show)
 
         self.plugin_button = []
         self.plugin_start_func = []
 
         for i, plugin in enumerate(self.manager.getAllPlugins()):
-            self.plugin_button.append(QPushButton(str(plugin.name)))
-            self.plugin_button[i].clicked.connect(plugin.plugin_object.run)
+            print("LOAD_PLUGIN:" + str(plugin.name))
             plugin.plugin_object.set_parent_data(self.data)
+            if plugin.plugin_object.enable_button():
+                button = QPushButton(str(plugin.name))
+                button.clicked.connect(plugin.plugin_object.clicked)
+                self.plugin_button.append(button)
+            else:
+                plugin.plugin_object.run()
         self.date = QLabel()
         # self.date.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
         self.date.setFixedHeight(20)  # 高さ固定
@@ -57,14 +63,11 @@ class MainWindow(QWidget):
     def update_layout(self):
         layout = QVBoxLayout()
         layout.addWidget(self.face)
-        layout.addWidget(self.device_maneger_button)
+        layout.addWidget(self.device_manager_button)
         for i in range(len(self.plugin_button)):
             layout.addWidget(self.plugin_button[i])
         layout.addWidget(self.date)
         self.setLayout(layout)
-
-    def call_test(self):
-        print("TEST_CALL")
 
     """
         ショボーンを回転させるためのメソッドです
@@ -95,7 +98,7 @@ class MainWindow(QWidget):
         self.date.setText('<div>'
                           + day_time_str
                           + '</div>'
-                         )
+                          )
 
     """
     時刻表示のタイミングを(無理やり)合わせるためのメソッド
@@ -120,9 +123,13 @@ class MainWindow(QWidget):
         quit()
 
 
-if __name__ == "__main__":
+def main():
     myApp = QApplication(sys.argv)
     myWindow = MainWindow()
     myWindow.show()
     myApp.exec_()
     sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

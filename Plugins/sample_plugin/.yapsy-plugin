@@ -1,9 +1,7 @@
 [Core]
 Name = SamplePlugin
 Module = hello
-Categories = rwr
 
 [Documentation]
 Author = Nobunobu
 Version = 0.1
-Categories = rwr

@@ -1,4 +1,4 @@
-#coding:utf-8
+# coding:utf-8
 from PyQt5.Qt import *
 
 
@@ -18,9 +18,18 @@ class DataContainer(QThread):
 
 
 class Plugin:
-    def __init__(self, data:DataContainer=None):
-        self.data = data  #type:DataContainer
-        pass
+    def __init__(self, data: DataContainer = None):
+        self.data = data  # type:DataContainer
+        self.param = True
 
-    def set_parent_data(self, data:DataContainer):
+    def set_parent_data(self, data: DataContainer):
         self.data = data
+
+    def clicked(self):
+        print("PUSH_BUTTON")
+
+    def enable_button(self):
+        return False
+
+    def run(self):
+        pass

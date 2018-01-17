@@ -5,8 +5,8 @@ import threading
 import time
 from PyQt5.QtWidgets import *
 from yapsy.IPlugin import IPlugin
-from Window.LineEdit import *
-from DataSturucture import *
+from pybration.Window.LineEdit import *
+from pybration.DataSturucture import *
 
 
 class Viewer(QWidget):

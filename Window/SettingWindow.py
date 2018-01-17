@@ -1,5 +1,5 @@
-from Window.LineEdit import *
-from Window.DeviceWindow import *
+from pybration.Window.LineEdit import *
+from pybration.Window.DeviceWindow import *
 from PyQt5.QtChart import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -17,7 +17,6 @@ class ManageWorkDirecory(QWidget):
         layout.addWidget(change_dir_button)
         layout.addStretch()
         self.setLayout(layout)
-
 
 
 class SettingWindow(QWidget):

@@ -7,7 +7,8 @@ from ctypes import *
 import time
 import sys
 import threading as th
-from Devices.Waveforms import dwfconstants as dwfc
+from pybration.Devices.IODevice import IODevice
+from pybration.Devices.Waveforms import dwfconstants as dwfc
 from enum import Enum
 
 if sys.platform.startswith("win"):
@@ -24,9 +25,10 @@ class Echannel(Enum):
     ch_all = 2
 
 
-class AnalogDiscovery2:
+class AnalogDiscovery2(IODevice):
 
     def __init__(self):
+        super().__init__()
         self.hdwf = c_int()
         self.samples = int()
         self.is_open_device = c_bool()

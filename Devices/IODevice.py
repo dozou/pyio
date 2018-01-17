@@ -1,9 +1,8 @@
 # -*- coding:utf-8 -*-
 
-from Devices.Waveforms.AnalogDiscovery import *
-from DataSturucture import *
+from pybration.DataSturucture import *
 
 
-class IODevice(AnalogDiscovery2):
+class IODevice:
     def __init__(self):
-        super().__init__()
+        pass

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-requires = {"yapsy",
+requires = ["yapsy",
             "PyQt5",
             "pyqtchart",
             "pandas",
             "matplotlib",
             "numpy",
-            }
+            ]
 
 
 setup(

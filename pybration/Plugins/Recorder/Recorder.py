@@ -152,7 +152,10 @@ class Recorder(IPlugin, Plugin):
         super().__init__()
         self.view = None  # type:Viewer
 
-    def run(self):
+    def enable_button(self):
+        return True
+
+    def clicked(self):
         print(self.data.device)
         self.view = Viewer(data_container=self.data)
         self.view.show()

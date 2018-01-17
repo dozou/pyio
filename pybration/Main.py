@@ -1,7 +1,6 @@
 # coding:utf-8
 import sys
 import os
-sys.path.append(os.path.dirname(__file__))
 from yapsy.PluginManager import PluginManager
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *

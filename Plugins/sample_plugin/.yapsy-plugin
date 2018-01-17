@@ -1,7 +1,0 @@
-[Core]
-Name = SamplePlugin
-Module = hello
-
-[Documentation]
-Author = Nobunobu
-Version = 0.1

@@ -226,7 +226,10 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-Plugins/
+Plugin/
 Data/
 
+!Plugin/FFTViewer
+!Plugin/RawSignalViewer
+!Plugin/Recorder
 

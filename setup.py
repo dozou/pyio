@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 requires = {"yapsy",
-            "pyqt5",
+            "PyQt5",
             "pyqtchart",
             "pandas",
             "matplotlib",

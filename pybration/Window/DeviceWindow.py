@@ -162,7 +162,8 @@ class DeviceManagerWindow(QWidget):
     def start_device(self):
         for index, combo_box in enumerate(self.device_select_box):
             print("OPEN_DEVICE'" + str(index) + ":" + combo_box.currentText() + "'")
-            self.device[index].open_device(get_index_analog_discovery2(combo_box.currentText()))
+            if self.device[index].info['name'] == 'AnalogDiscovery':
+                self.device[index].open_device(get_index_analog_discovery2(combo_box.currentText()))
             # index = get_index_analog_discovery2(key)
             # dev.open_device(get_index_analog_discovery2(self.device_select_box[index].currentText()))
         self.discovery_button.disconnect()

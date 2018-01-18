@@ -1,9 +1,7 @@
 # coding:utf-8
-import sys
 import os
+import json
 from yapsy.PluginManager import PluginManager
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
 from pybration.Window.DeviceWindow import *
 from pybration.DataSturucture import *
 import datetime
@@ -20,11 +18,18 @@ class MainWindow(QWidget):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.data = DataContainer()
+        try:
+            param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
+        except IOError:
+            print("LOAD_PARAMETER:default")
+            param = open("./default.json", 'r')
+        self.data.parameter = json.load(param)
+
         self.manager = PluginManager()
 
-        self.manager.setPluginPlaces([os.path.join(os.path.dirname(__file__), "Plugins")])
+        self.manager.setPluginPlaces([os.path.join(os.path.dirname(__file__), "Plugins"),
+                                      self.data.parameter['System']['plugin_folder']])
         self.manager.collectPlugins()
-        print(os.path.dirname(__file__))
         self.setWindowTitle("Pybration")
         self.face = QLabel()
         self.setting_manager = DeviceManagerWindow(parent=parent, data=self.data)
@@ -39,6 +44,7 @@ class MainWindow(QWidget):
 
         for i, plugin in enumerate(self.manager.getAllPlugins()):
             print("LOAD_PLUGIN:" + str(plugin.name))
+            self.data.parameter['Plugins'][str(plugin.name)] = {}
             plugin.plugin_object.set_parent_data(self.data)
             if plugin.plugin_object.enable_button():
                 button = QPushButton(str(plugin.name))
@@ -46,6 +52,7 @@ class MainWindow(QWidget):
                 self.plugin_button.append(button)
             else:
                 plugin.plugin_object.run()
+
         self.date = QLabel()
         # self.date.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
         self.date.setFixedHeight(20)  # 高さ固定
@@ -119,6 +126,10 @@ class MainWindow(QWidget):
     def closeEvent(self, a0):
         for dev in self.data.device:
             dev.close_device()
+        if not os.path.exists(os.environ['HOME']+"/.pybration"):
+            os.mkdir(os.environ['HOME']+"/.pybration")
+        fw = open(os.environ['HOME']+"/.pybration/param.json", 'w')
+        json.dump(self.data.parameter, fw, indent=4)
         quit()
 
 

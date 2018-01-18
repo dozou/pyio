@@ -41,6 +41,7 @@ class AnalogDiscovery2(IODevice):
         self.check_ai_th = True
         self.ai_data = []
         self.rad_samples = (c_double*4096)()
+        self.info['name'] = 'AnalogDiscovery'
 
     def view_version(self):
         version = create_string_buffer(16)

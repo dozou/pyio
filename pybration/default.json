@@ -1,7 +1,7 @@
 {
   "System":{
     "setting_folder":"~/.pybration/",
-    "plugin_folder":""
+    "plugin_folder":[]
   },
   "Plugins":{},
   "Device":{}

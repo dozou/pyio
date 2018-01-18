@@ -22,12 +22,12 @@ class AiControlView(QWidget):
 
         self.sample_calc_1 = QLabel()
         self.sample_rate = LabelOnSpinBox(label='SampleRate',
-                                          val=163840,
+                                          val=self.data.parameter["AnalogDiscovery"]["sample_rate"],
                                           maximum=9999999)
         self.sample_rate.changed_value(self.calc_status)
 
         self.sample_num = LabelOnSpinBox(label='Samples',
-                                         val=8192,
+                                         val=self.data.parameter["AnalogDiscovery"]["samples"],
                                          maximum=8192)
         self.sample_num.changed_value(self.calc_status)
 
@@ -53,11 +53,12 @@ class AiControlView(QWidget):
             print("デバイスが見つかりません")
             return None
         for key, device in enumerate(self.device):
-            device.set_config_ai(hzAcq=int(self.sample_rate.get_value()),
+            if device.info["name"] == "AnalogDiscovery":
+                device.set_config_ai(hzAcq=int(self.sample_rate.get_value()),
                                  nSamples=int(self.sample_num.get_value()))
-            device.start_ai(thread_mode=True, channel=Echannel.ch_all)
-        self.data.parameter["sample_rate"] = self.sample_rate.get_value()
-        self.data.parameter["samples"] = self.sample_num.get_value()
+                device.start_ai(thread_mode=True, channel=Echannel.ch_all)
+                self.data.parameter["AnalogDiscovery"]["sample_rate"] = self.sample_rate.get_value()
+                self.data.parameter["AnalogDiscovery"]["samples"] = self.sample_num.get_value()
 
     def calc_status(self):
         sampleRate = self.sample_rate.get_value()
@@ -110,6 +111,13 @@ class DeviceManagerWindow(QWidget):
 
     def __init__(self, data: DataContainer, parent=None):
         super(DeviceManagerWindow, self).__init__(parent=parent)
+
+        if not data.parameter.get("AnalogDiscovery"):
+            data.parameter["AnalogDiscovery"] = {
+                'sample_rate': 163840,
+                'samples': 8192,
+            }
+
         self.setWindowTitle("デバイスマネージャ")
         self.discovery_button = QPushButton("接続")
         self.discovery_button.clicked.connect(self.start_device)

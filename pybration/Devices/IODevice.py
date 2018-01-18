@@ -15,6 +15,9 @@ class IODevice:
     def close_device(self):
         pass
 
+    def is_open(self):
+        return False
+
     def get_serial(self):
         return ""
 

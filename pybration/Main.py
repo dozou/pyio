@@ -19,6 +19,7 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__(parent)
         self.data = DataContainer()
         try:
+            print("LOAD_PARAMETER:"+os.environ['HOME']+"/.pybration/param.json")
             param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
         except IOError:
             print("LOAD_PARAMETER:default")
@@ -26,9 +27,9 @@ class MainWindow(QWidget):
         self.data.parameter = json.load(param)
 
         self.manager = PluginManager()
-
-        self.manager.setPluginPlaces([os.path.join(os.path.dirname(__file__), "Plugins"),
-                                      self.data.parameter['System']['plugin_folder']])
+        plugin_dir = [os.path.join(os.path.dirname(__file__), "Plugins")]
+        plugin_dir.extend(self.data.parameter['System']['plugin_folder'])
+        self.manager.setPluginPlaces(plugin_dir)
         self.manager.collectPlugins()
         self.setWindowTitle("Pybration")
         self.face = QLabel()

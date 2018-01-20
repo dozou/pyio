@@ -33,3 +33,9 @@ class Plugin:
 
     def run(self):
         pass
+
+    def get_device(self, dev_name: str):
+        for dev in self.data.device:
+            if dev.info['name'] == dev_name:
+                return dev
+        ValueError("Nothing "+dev_name)

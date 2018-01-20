@@ -1,13 +1,19 @@
 # -*- coding:utf-8 -*-
+from enum import *
 
-from pybration.DataSturucture import *
+
+class Echannel(Enum):
+    ch_1 = 0
+    ch_2 = 1
+    ch_all = 2
 
 
 class IODevice:
-    info = {}
 
     def __init__(self):
-        pass
+        self.info = {"name": "none",
+                "id": 0
+                }
 
     def open_device(self):
         pass

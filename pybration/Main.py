@@ -18,14 +18,7 @@ class MainWindow(QWidget):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.data = DataContainer()
-        try:
-            print("LOAD_PARAMETER:"+os.environ['HOME']+"/.pybration/param.json")
-            param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
-        except IOError:
-            print("LOAD_PARAMETER:default")
-            param = open("./default.json", 'r')
-        self.data.parameter = json.load(param)
-
+        self.check_json()
         self.manager = PluginManager()
         plugin_dir = [os.path.join(os.path.dirname(__file__), "Plugins")]
         plugin_dir.extend(self.data.parameter['System']['plugin_folder'])
@@ -45,7 +38,8 @@ class MainWindow(QWidget):
 
         for i, plugin in enumerate(self.manager.getAllPlugins()):
             print("LOAD_PLUGIN:" + str(plugin.name))
-            self.data.parameter['Plugins'][str(plugin.name)] = {}
+            if not self.data.parameter['Plugins'].get(plugin.name):
+                self.data.parameter['Plugins'][str(plugin.name)] = {}
             plugin.plugin_object.set_parent_data(self.data)
             if plugin.plugin_object.enable_button():
                 button = QPushButton(str(plugin.name))
@@ -75,6 +69,24 @@ class MainWindow(QWidget):
             layout.addWidget(self.plugin_button[i])
         layout.addWidget(self.date)
         self.setLayout(layout)
+
+    def check_json(self):
+        try:
+            print("LOAD_PARAMETER:"+os.environ['HOME']+"/.pybration/param.json")
+            param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
+        except IOError:
+            print("LOAD_PARAMETER:default")
+            param = open("./default.json", 'r')
+        self.data.parameter = json.load(param)
+
+        if not self.data.parameter['System'].get('setting_folder'):
+            self.data.parameter['System']['setting_folder'] = os.environ['HOME']+"/.pybration/"
+
+        if not self.data.parameter['System'].get('plugin_folder'):
+            self.data.parameter['System']['plugin_folder'] = []
+
+        if not self.data.parameter['System'].get('work_folder'):
+            self.data.parameter['System']['work_folder'] = ""
 
     """
         ショボーンを回転させるためのメソッドです

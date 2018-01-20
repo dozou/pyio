@@ -7,7 +7,7 @@ from ctypes import *
 import time
 import sys
 import threading as th
-from pybration.Devices.IODevice import IODevice
+from pybration.Devices.IODevice import IODevice, Echannel
 from pybration.Devices.Waveforms import dwfconstants as dwfc
 from enum import Enum
 
@@ -17,12 +17,6 @@ elif sys.platform.startswith("darwin"):
     dwf = cdll.LoadLibrary("/Library/Frameworks/dwf.framework/dwf")
 else:
     dwf = cdll.LoadLibrary("libdwf.so")
-
-
-class Echannel(Enum):
-    ch_1 = 0
-    ch_2 = 1
-    ch_all = 2
 
 
 class AnalogDiscovery2(IODevice):
@@ -152,6 +146,11 @@ class AnalogDiscovery2(IODevice):
                 if error_cnt > 100:
                     return rgpy, rgpy2
             error_cnt += 0
+
+    def get_value(self, channel: Echannel):
+        if channel.value == Echannel.ch_all.value:
+            return self.ai_data
+        return self.ai_data[channel.value]
 
     def ai_loop_process(self):
         while self.check_ai_th:

@@ -21,7 +21,7 @@ def series_to_polyline(xdata, ydata):
     return polyline
 
 
-class ChartObject(QObject):
+class ChartObject(QThread):
     def __init__(self, data:DataContainer):
         super().__init__()
         self.ncurves = 0

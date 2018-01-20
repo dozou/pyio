@@ -16,12 +16,10 @@ from pybration.Window.Charts import *
 class ChartWidget(QWidget):
     def __init__(self, device, parent=None):
         super().__init__(parent)
-        self.qth = QThread()
         self.data = DataContainer()
         self.data.device.append(device)
         self.ch = ChartObject(data=self.data)
-        self.ch.moveToThread(self.qth)
-        self.qth.start()
+        self.ch.start()
         self.view = QChartView(self.ch.chart)
         self.view.setRenderHint(QPainter.Antialiasing)
         layout = QVBoxLayout()
@@ -40,7 +38,7 @@ class ChartWidget(QWidget):
         self.device = device
 
     def hideEvent(self, a0: QHideEvent):
-        self.qth.exit()
+        self.ch.exit()
 
 
 class Viewer(QWidget):

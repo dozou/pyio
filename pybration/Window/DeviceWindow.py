@@ -1,5 +1,6 @@
 # coding:utf-8
 
+import copy
 from pybration.Window.LineEdit import *
 from pybration.Devices.Waveforms.AnalogDiscovery import *
 from pybration.DataSturucture import DataContainer
@@ -22,12 +23,12 @@ class AiControlView(QWidget):
 
         self.sample_calc_1 = QLabel()
         self.sample_rate = LabelOnSpinBox(label='SampleRate',
-                                          val=self.data.parameter["AnalogDiscovery"]["sample_rate"],
+                                          val=self.data.parameter["Device"]["AnalogDiscovery"]["sample_rate"],
                                           maximum=9999999)
         self.sample_rate.changed_value(self.calc_status)
 
         self.sample_num = LabelOnSpinBox(label='Samples',
-                                         val=self.data.parameter["AnalogDiscovery"]["samples"],
+                                         val=self.data.parameter["Device"]["AnalogDiscovery"]["samples"],
                                          maximum=8192)
         self.sample_num.changed_value(self.calc_status)
 
@@ -57,8 +58,8 @@ class AiControlView(QWidget):
                 device.set_config_ai(hzAcq=int(self.sample_rate.get_value()),
                                  nSamples=int(self.sample_num.get_value()))
                 device.start_ai(thread_mode=True, channel=Echannel.ch_all)
-                self.data.parameter["AnalogDiscovery"]["sample_rate"] = self.sample_rate.get_value()
-                self.data.parameter["AnalogDiscovery"]["samples"] = self.sample_num.get_value()
+                self.data.parameter["Device"]["AnalogDiscovery"]["sample_rate"] = self.sample_rate.get_value()
+                self.data.parameter["Device"]["AnalogDiscovery"]["samples"] = self.sample_num.get_value()
 
     def calc_status(self):
         sampleRate = self.sample_rate.get_value()
@@ -112,12 +113,12 @@ class DeviceManagerWindow(QWidget):
     def __init__(self, data: DataContainer, parent=None):
         super(DeviceManagerWindow, self).__init__(parent=parent)
 
-        if not data.parameter.get("AnalogDiscovery"):
-            data.parameter["AnalogDiscovery"] = {
+        if not data.parameter["Device"].get("AnalogDiscovery"):
+            data.parameter["Device"]["AnalogDiscovery"] = {
                 'sample_rate': 163840,
                 'samples': 8192,
             }
-
+        self.device_parameter = data.parameter['Device']['AnalogDiscovery']
         self.setWindowTitle("デバイスマネージャ")
         self.discovery_button = QPushButton("接続")
         self.discovery_button.clicked.connect(self.start_device)
@@ -168,12 +169,21 @@ class DeviceManagerWindow(QWidget):
                 self.device_select_box[i].addItem("update")
 
     def start_device(self):
+        dev_id = 0
+        self.device_parameter['devices'] = []
+        param = self.device_parameter['devices']  # type: list
         for index, combo_box in enumerate(self.device_select_box):
             print("OPEN_DEVICE'" + str(index) + ":" + combo_box.currentText() + "'")
             if self.device[index].info['name'] == 'AnalogDiscovery':
                 self.device[index].open_device(get_index_analog_discovery2(combo_box.currentText()))
-            # index = get_index_analog_discovery2(key)
-            # dev.open_device(get_index_analog_discovery2(self.device_select_box[index].currentText()))
+                self.device[index].info['id'] = dev_id
+                device_param = dict()
+                device_param['id'] = dev_id
+                device_param['serial'] = self.device[index].get_serial()
+                device_param['device_index'] = index
+                param.append(device_param)
+                dev_id += 1
+
         self.discovery_button.disconnect()
         self.discovery_button.clicked.connect(self.stop_device)
         self.discovery_button.setText("接続済み")

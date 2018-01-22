@@ -52,6 +52,9 @@ class LabelOnLineEdit(QWidget):
         layout.setContentsMargins(QMargins(0, 0, 0, 0))
         self.setLayout(layout)
 
+    def set_value(self, text: str):
+        self.LineEdit.setText(text)
+
     def changed_value(self, func):
         self.LineEdit.returnPressed.connect(func)
 
@@ -79,6 +82,9 @@ class LabelOnSpinBox(QWidget):
         layout.addWidget(self.LineEdit)
         layout.setContentsMargins(QMargins(0, 0, 0, 0))
         self.setLayout(layout)
+
+    def set_value(self, val: float):
+        self.LineEdit.setValue(val)
 
     def changed_value(self, func):
         self.LineEdit.valueChanged.connect(func)

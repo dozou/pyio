@@ -37,8 +37,8 @@ class FFTContainer(DataContainer):
     def calc(self):
         ans_data = []
         for obj in self.device:
-            data_ch1 = obj.get_value(Echannel.ch_1)
-            data_ch2 = obj.get_value(Echannel.ch_2)
+            data_ch1 = obj.get_value(channel=Echannel.ch_1)
+            data_ch2 = obj.get_value(channel=Echannel.ch_2)
 
             data_ch1 = scipy.fftpack.fft(data_ch1)
             data_ch2 = scipy.fftpack.fft(data_ch2)

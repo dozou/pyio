@@ -147,7 +147,7 @@ class AnalogDiscovery2(IODevice):
                     return rgpy, rgpy2
             error_cnt += 0
 
-    def get_value(self, channel: Echannel):
+    def get_value(self, channel: Echannel=Echannel.ch_all):
         if channel.value == Echannel.ch_all.value:
             return self.ai_data
         return self.ai_data[channel.value]

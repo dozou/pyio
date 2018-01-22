@@ -1,5 +1,6 @@
 # coding:utf-8
 import os
+import sys
 import json
 from yapsy.PluginManager import PluginManager
 from pybration.Window.DeviceWindow import *
@@ -19,6 +20,8 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__(parent)
         self.data = DataContainer()
         self.check_json()
+        for p in self.data.parameter['System']['plugin_folder']:
+            sys.path.append(p)
         self.manager = PluginManager()
         plugin_dir = [os.path.join(os.path.dirname(__file__), "Plugins")]
         plugin_dir.extend(self.data.parameter['System']['plugin_folder'])
@@ -40,6 +43,7 @@ class MainWindow(QWidget):
             print("LOAD_PLUGIN:" + str(plugin.name))
             if not self.data.parameter['Plugins'].get(plugin.name):
                 self.data.parameter['Plugins'][str(plugin.name)] = {}
+
             plugin.plugin_object.set_parent_data(self.data)
             if plugin.plugin_object.enable_button():
                 button = QPushButton(str(plugin.name))

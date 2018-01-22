@@ -1,5 +1,5 @@
 # coding:utf-8
-from PyQt5.Qt import *
+from PyQt5.QtCore import QThread
 
 
 class DataContainer(QThread):
@@ -39,3 +39,7 @@ class Plugin:
             if dev.info['name'] == dev_name:
                 return dev
         ValueError("Nothing "+dev_name)
+
+    def get_dir(self):
+        return ""
+

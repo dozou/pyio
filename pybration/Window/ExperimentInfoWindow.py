@@ -5,8 +5,8 @@ from PyQt5.QtWidgets import QLabel, QWidget, QVBoxLayout, QPushButton
 
 
 class ExperimentInfoWindow(QWidget):
-    def __init__(self, data: DataContainer):
-        super().__init__()
+    def __init__(self, data: DataContainer, parent=None):
+        super().__init__(parent=parent)
         if not data.parameter["Plugins"].get("Experiment"):
             data.parameter["Plugins"]["Experiment"] = {}
         self.my_param = data.parameter["Plugins"]["Experiment"]  # type: dict
@@ -20,15 +20,14 @@ class ExperimentInfoWindow(QWidget):
                                             text="")
         self.success_button = QPushButton("Success")
         self.add_info = list()
-        self.update_layout()
+        self.layout_v_box = QVBoxLayout(self)  # type: QVBoxLayout
 
     def update_layout(self):
-        layout = QVBoxLayout()
-        layout.addWidget(self.title)
-        layout.addWidget(self.experiment_id)
-        layout.addWidget(self.subject_name)
-        for i in self.add_info:
-            layout.addWidget(i)
-        layout.addWidget(self.success_button)
-        layout.addStretch()
-        self.setLayout(layout)
+        self.layout_v_box.addWidget(self.title)
+        self.layout_v_box.addWidget(self.experiment_id)
+        self.layout_v_box.addWidget(self.subject_name)
+        for i, obj in enumerate(self.add_info):
+            self.layout_v_box.addWidget(self.add_info[i])
+        self.layout_v_box.addWidget(self.success_button)
+        self.layout_v_box.addStretch()
+        self.setLayout(self.layout_v_box)

@@ -104,8 +104,9 @@ class AoControlView(QWidget):
         (start, stop) = self.range_sweep.get_value()
         v = float(self.amp_line.get_value())
         for key, device in enumerate(self.device):
-            device.create_sweep(startHz=start, stopHz=stop, sweepSec=0.025, outVoltage=v)
-            device.start_ao()
+            if device.info['name'] == "AnalogDiscovery":
+                device.create_sweep(startHz=start, stopHz=stop, sweepSec=0.025, outVoltage=v)
+                device.start_ao()
 
 
 class DeviceManagerWindow(QWidget):

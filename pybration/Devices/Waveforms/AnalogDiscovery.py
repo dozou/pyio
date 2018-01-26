@@ -67,7 +67,7 @@ class AnalogDiscovery2(IODevice):
     def is_start_ao(self):
         return self.check_ao
 
-    def get_serial(self):
+    def get_serial(self)->str:
         serial_num = create_string_buffer(16)
         dwf.FDwfEnumSN(self.device_index, serial_num)
         serial_num = str(serial_num.value)

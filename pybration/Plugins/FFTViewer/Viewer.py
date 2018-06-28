@@ -37,19 +37,20 @@ class FFTContainer(DataContainer):
     def calc(self):
         ans_data = []
         for obj in self.device:
-            data_ch1 = obj.get_value(channel=Echannel.ch_1)
-            data_ch2 = obj.get_value(channel=Echannel.ch_2)
+            if obj.info['name'] == 'AnalogDiscovery':
+                data_ch1 = obj.get_value(channel=Echannel.ch_1)
+                data_ch2 = obj.get_value(channel=Echannel.ch_2)
 
-            data_ch1 = scipy.fftpack.fft(data_ch1)
-            data_ch2 = scipy.fftpack.fft(data_ch2)
+                data_ch1 = scipy.fftpack.fft(data_ch1)
+                data_ch2 = scipy.fftpack.fft(data_ch2)
 
-            data_ch1 = np.array([np.sqrt(c.real ** 2 + c.imag ** 2) for c in data_ch1])
-            data_ch2 = np.array([np.sqrt(c.real ** 2 + c.imag ** 2) for c in data_ch2])
+                data_ch1 = np.array([np.sqrt(c.real ** 2 + c.imag ** 2) for c in data_ch1])
+                data_ch2 = np.array([np.sqrt(c.real ** 2 + c.imag ** 2) for c in data_ch2])
 
-            data_ch1 = data_ch1[self.index]
-            data_ch2 = data_ch2[self.index]
+                data_ch1 = data_ch1[self.index]
+                data_ch2 = data_ch2[self.index]
 
-            ans_data.append([data_ch1, data_ch2])
+                ans_data.append([data_ch1, data_ch2])
         self.ans_data = ans_data
 
     def run(self):
@@ -59,7 +60,6 @@ class FFTContainer(DataContainer):
 
     def get_ai(self):
         return self.ans_data
-
 
 class ChartWidget(QWidget):
     def __init__(self, data:DataContainer, parent=None):

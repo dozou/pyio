@@ -41,7 +41,7 @@ class RecordWindow(QWidget):
                                           val=50.0)
         self.sample_line = LabelOnSpinBox(label='サンプル数',
                                           val=0,
-                                          maximum=30000)
+                                          maximum=100000)
         self.start_button = QPushButton("記録開始")
         self.init_button = QPushButton("初期化")
         self.current_samples_label = QLabel("Samples:0")

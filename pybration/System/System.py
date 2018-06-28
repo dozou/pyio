@@ -20,7 +20,7 @@ class System:
         work_dir = work_dir + "/" + dir_name
         work_dir = self.check_dir_str(work_dir)
         if not os.path.exists(work_dir):
-            os.mkdir(work_dir)
+            os.makedirs(work_dir)
         work_dir = work_dir + sub_name
         if not os.path.exists(work_dir):
             os.mkdir(work_dir)

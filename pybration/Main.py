@@ -142,7 +142,8 @@ class MainWindow(QWidget):
 
     def closeEvent(self, a0):
         for dev in self.data.device:
-            dev.close_device()
+            if dev.is_open():
+                dev.close_device()
         if not os.path.exists(os.environ['HOME']+"/.pybration"):
             os.mkdir(os.environ['HOME']+"/.pybration")
         fw = open(os.environ['HOME']+"/.pybration/param.json", 'w')

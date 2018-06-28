@@ -27,16 +27,15 @@ C++の修行は数十年かかるからPython使おうぜ！！
 
 * Python3 -> brewから入れられるよ！！　Lab01のPCでも実行確認済み
 * OSX version =< high sierra対応しちゃってました。  
- ~~El capitan (AnalogDiscovery2がSierraに対応してないよ)~~
-* WaveForms2015 -> 公式サイトで手に入るよ
+
+#### オプション
+* WaveForms2015 -> USBオシロを使用する場合は別途インストールしてください
 
 
 ### pybrationの開発に関して
 
-pybrationは竹村研民の竹村研民のための研究支援ツールです．
+pybrationは竹村研民による竹村研民のための研究支援ツールです．
 開発者は随時募集していますので何かあれば骨班の院生に聞いてみてください．
-Doc/index.htmにDoxygenで生成したAPIリファレンスとサンプルが置いてあります．  
-その他の開発情報に関しては[こちら](Doc/develop.md)を参照してください．
 
 ### ライセンスとか ###
 

@@ -54,7 +54,7 @@ class MainWindow(QWidget):
 
         self.date = QLabel()
         # self.date.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
-        self.date.setFixedHeight(20)  # 高さ固定
+        self.date.setFixedHeight(20 * 2)  # 高さ固定
         self.update_layout()
 
         # self.wait_0_microsecond()
@@ -116,10 +116,17 @@ class MainWindow(QWidget):
     """
 
     def time_draw(self):
-        d = datetime.datetime.today()
+        # d = datetime.datetime.today()
+        d = datetime.datetime.now()
         day_time_str = d.strftime("%Y-%m-%d %H:%M:%S")
+        day_time_atranta = d - datetime.timedelta(hours=13)
+        day_time_atranta_str = day_time_atranta.strftime("%Y-%m-%d %H:%M:%S")
         self.date.setText('<div>'
+                          + '<center>'
                           + day_time_str
+                          + '<br />'
+                          + day_time_atranta_str
+                          + '</center>'
                           + '</div>'
                           )
 

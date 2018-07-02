@@ -4,6 +4,7 @@ import sys
 import json
 from yapsy.PluginManager import PluginManager
 from pybration.Window.DeviceWindow import *
+from pybration.System.System import *
 from pybration.DataSturucture import *
 from pybration.Tools.Json import get_default_param
 import datetime
@@ -20,13 +21,14 @@ class MainWindow(QWidget):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.data = DataContainer()
+        self.system = System(self.data)
         self.check_json()
         for p in self.data.parameter['System']['plugin_folder']:
-            sys.path.append(p)
+            sys.path.append(self.system.check_dir_str(p))
         self.manager = PluginManager()
         plugin_dir = [os.path.join(os.path.dirname(__file__), "Plugins")]
         plugin_dir.extend(self.data.parameter['System']['plugin_folder'])
-        self.manager.setPluginPlaces(plugin_dir)
+        self.manager.setPluginPlaces(self.system.check_dir_str(plugin_dir))
         self.manager.collectPlugins()
         self.setWindowTitle("Pybration")
         self.face = QLabel()
@@ -85,20 +87,10 @@ class MainWindow(QWidget):
             param = get_default_param()
             self.data.parameter = param
 
-        if not self.data.parameter['System'].get('setting_folder'):
-            self.data.parameter['System']['setting_folder'] = os.environ['HOME']+"/.pybration/"
-
-        if not self.data.parameter['System'].get('plugin_folder'):
-            self.data.parameter['System']['plugin_folder'] = []
-
-        if not self.data.parameter['System'].get('work_folder'):
-            self.data.parameter['System']['work_folder'] = ""
-
     """
         ショボーンを回転させるためのメソッドです
         125[msec]間隔で更新しています
     """
-
     def timeout(self):
 
         if len(self.face_data) == self.face_rote:

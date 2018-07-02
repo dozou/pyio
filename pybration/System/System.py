@@ -26,7 +26,11 @@ class System:
             os.mkdir(work_dir)
         return work_dir
 
-    def check_dir_str(self, dir_str: str):
-        dir_str = dir_str.replace("//", "/")
-        dir_str = dir_str.replace("~", os.environ['HOME'])
+    def check_dir_str(self, dir_str: list):
+        if str is type(dir_str):
+            dir_str = [dir_str]
+
+        for i,d in enumerate(dir_str):
+            dir_str[i] = d.replace("//", "/")
+            dir_str[i] = d.replace("~", os.environ['HOME'])
         return dir_str

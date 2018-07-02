@@ -5,6 +5,7 @@ import json
 from yapsy.PluginManager import PluginManager
 from pybration.Window.DeviceWindow import *
 from pybration.DataSturucture import *
+from pybration.Tools.Json import get_default_param
 import datetime
 import time
 
@@ -78,10 +79,11 @@ class MainWindow(QWidget):
         try:
             print("LOAD_PARAMETER:"+os.environ['HOME']+"/.pybration/param.json")
             param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
+            self.data.parameter = json.load(param)
         except IOError:
             print("LOAD_PARAMETER:default")
-            param = open("./default.json", 'r')
-        self.data.parameter = json.load(param)
+            param = get_default_param()
+            self.data.parameter = param
 
         if not self.data.parameter['System'].get('setting_folder'):
             self.data.parameter['System']['setting_folder'] = os.environ['HOME']+"/.pybration/"

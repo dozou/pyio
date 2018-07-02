@@ -42,12 +42,13 @@ class ChartWidget(QWidget):
 
 
 class Viewer(QWidget):
-    def __init__(self,parent=None, data:DataContainer=None):
+    def __init__(self,parent=None, data: DataContainer=None):
         super().__init__(parent)
         self.device = data.device
         self.chart_widgets = []
         for i in self.device:
-            self.chart_widgets.append(ChartWidget(device=i))
+            if i.info["type"] == "ai_device":
+                self.chart_widgets.append(ChartWidget(device=i))
 
         layout = QVBoxLayout()
         for i, obj in enumerate(self.chart_widgets):

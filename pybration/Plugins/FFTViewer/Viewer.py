@@ -93,10 +93,11 @@ class Viewer(QWidget):
         super().__init__(parent)
         self.chart_widgets = []
         for i in data.device:
-            split_data = DataContainer()
-            split_data.parameter = data.parameter
-            split_data.device = [i]
-            self.chart_widgets.append(ChartWidget(data=split_data))
+            if i.info["type"] == "ai_device":
+                split_data = DataContainer()
+                split_data.parameter = data.parameter
+                split_data.device = [i]
+                self.chart_widgets.append(ChartWidget(data=split_data))
 
         layout = QVBoxLayout()
         for i, obj in enumerate(self.chart_widgets):

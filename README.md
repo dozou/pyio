@@ -39,16 +39,12 @@ pybrationは竹村研民による竹村研民のための研究支援ツール�
 
 ### Versoin情報
 
-#### v0.2.x(開発中)
-
-以下を変更予定
-* AnalogDiscoveryをプラグインとして実装
-* 設定（AnalogDiscovery）を登録済みIODeviceの管理用UIに再実装
-
 #### v0.1.x(現行)
 
 ##### v0.1.1
-
+以下のバグを解決
+* pip install がdefault.jsonによってできない問題
+* プラグイン読み込みディレクトリの指定で”~”が使えない問題
 
 ##### v0.1.0
 初リリースしました．
@@ -56,6 +52,13 @@ pybrationは竹村研民による竹村研民のための研究支援ツール�
 * pipによるインストール
 * IODeviceやDataStructureなどのデータフォーマット提供
 * プラグイン機能による個人開発環境の提供
+
+
+#### v0.2.x(開発中)
+
+以下を変更予定
+* AnalogDiscoveryをプラグインとして実装
+* 設定（AnalogDiscovery）を登録済みIODeviceの管理用UIに再実装
 
 ### ライセンスとか ###
 

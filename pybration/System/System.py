@@ -6,7 +6,7 @@ from pybration.DataSturucture import DataContainer
 
 class System:
 
-    def __init__(self, data: DataContainer):
+    def __init__(self, data: DataContainer=None):
         self.data = data
         pass
 

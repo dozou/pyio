@@ -61,6 +61,7 @@ class FFTContainer(DataContainer):
     def get_ai(self):
         return self.ans_data
 
+
 class ChartWidget(QWidget):
     def __init__(self, data:DataContainer, parent=None):
         super().__init__(parent)

@@ -63,9 +63,6 @@ class LabelOnLineEdit(QWidget):
 
 
 class LabelOnSpinBox(QWidget):
-    LineEdit = None
-    label = None
-
     def __init__(self, label="no_label", maximum=1000, val=None):
         super(LabelOnSpinBox, self).__init__()
         self.label = '<div align="right">'

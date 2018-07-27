@@ -17,16 +17,17 @@ class Record(QThread):
         self.sleep_ms = sleep_ms
 
     def run(self):
-        for i in range(self.size):
-            if not self.th_is_alive:
-                return
-            self.rec(i)
-            self.ChangedIdx.emit(i)
+        cnt = 0 # type:int
+        while cnt < self.size and self.th_is_alive:
+            if self.rec(cnt):
+                cnt += 1
+                self.ChangedIdx.emit(cnt)
             self.msleep(self.sleep_ms)
         self.Stopped.emit()
 
     def rec(self, idx: int):
         print("")
+        return True
 
     def stop(self):
         self.th_is_alive = False

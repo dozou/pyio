@@ -12,7 +12,8 @@ class IODevice:
 
     def __init__(self):
         self.info = {"name": "none",
-                     "id": 0
+                     "id": 0,
+                     "type": "none",
                      }
 
     def open_device(self):

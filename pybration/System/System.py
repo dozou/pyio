@@ -6,7 +6,7 @@ from pybration.DataSturucture import DataContainer
 
 class System:
 
-    def __init__(self, data: DataContainer):
+    def __init__(self, data: DataContainer=None):
         self.data = data
         pass
 
@@ -16,7 +16,7 @@ class System:
         eid = str(self.data.parameter['ExperimentInfo']['experiment_id'])
         d = datetime.datetime.today()
         dir_name = d.strftime("%m%d")
-        dir_name = dir_name + "_EID" + eid
+        dir_name = dir_name + "_EID" + str(eid)
         work_dir = work_dir + "/" + dir_name
         work_dir = self.check_dir_str(work_dir)
         if not os.path.exists(work_dir):
@@ -26,7 +26,13 @@ class System:
             os.mkdir(work_dir)
         return work_dir
 
-    def check_dir_str(self, dir_str: str):
-        dir_str = dir_str.replace("//", "/")
-        dir_str = dir_str.replace("~", os.environ['HOME'])
+    def check_dir_str(self, dir_str: list):
+        if str is type(dir_str):
+            dir_str = [dir_str]
+
+        for i,d in enumerate(dir_str):
+            dir_str[i] = d.replace("//", "/")
+            dir_str[i] = d.replace("~", os.environ['HOME'])
+        if len(dir_str) == 1:
+            return dir_str[0]
         return dir_str

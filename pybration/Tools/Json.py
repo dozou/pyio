@@ -14,3 +14,16 @@ class Json:
         fp = open(filename, "rw")
         js.dump(self._dict_data, fp)
 
+
+def get_default_param():
+    param = {
+            "System": {
+                "setting_folder": "~/.pybration/",
+                "plugin_folder": [],
+                "work_folder": ""
+            },
+            "Plugins": {},
+            "Device": {},
+            "ExperimentInfo": {}
+        }
+    return param

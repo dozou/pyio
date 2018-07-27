@@ -21,7 +21,7 @@ class ExperimentInfoWindow(QWidget):
         self.subject_name = LabelOnLineEdit(label="Name",
                                             text="")
         self.subject_name.LineEdit.textChanged.connect(self.update_info)
-        self.success_button = QPushButton("Success")
+        self.complete_button = QPushButton("Success")
         self.add_info = list()
         self.layout_v_box = QVBoxLayout(self)  # type: QVBoxLayout
         self.update_info()
@@ -32,7 +32,7 @@ class ExperimentInfoWindow(QWidget):
         self.layout_v_box.addWidget(self.subject_name)
         for i, obj in enumerate(self.add_info):
             self.layout_v_box.addWidget(self.add_info[i])
-        self.layout_v_box.addWidget(self.success_button)
+        self.layout_v_box.addWidget(self.complete_button)
         self.layout_v_box.addStretch()
         self.setLayout(self.layout_v_box)
 

@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import *
 from yapsy.IPlugin import IPlugin
 from pybration.Window.LineEdit import *
 from pybration.DataSturucture import *
+from pybration.System import System
 
 
 class Viewer(QWidget):
@@ -128,15 +129,16 @@ class Viewer(QWidget):
         self.data_cnt = 0
 
     def write_csv(self):
+        system = System.System()
         for i, dev in enumerate(self.device):
             if self.write_format_checkbox.isChecked():
                 wave_data = pd.DataFrame(self.wave_data_ch1[i])
                 raw_file_name = self.file_name_line.get_value()
-                wave_data.to_pickle(raw_file_name+"_dev"+str(i)+'_ch1_wave.pkl')
+                wave_data.to_pickle(system.check_dir_str(raw_file_name+"_dev"+str(i)+'_ch1_wave.pkl'))
 
                 wave_data = pd.DataFrame(self.wave_data_ch2[i])
                 raw_file_name = self.file_name_line.get_value()
-                wave_data.to_pickle(raw_file_name+"_dev"+str(i)+'_ch2_wave.pkl')
+                wave_data.to_pickle(system.check_dir_str(raw_file_name+"_dev"+str(i)+'_ch2_wave.pkl'))
             else:
                 wave_data = pd.DataFrame(self.wave_data_ch1[i])
                 raw_file_name = self.file_name_line.get_value()

@@ -7,7 +7,7 @@ from pybration.DataSturucture import DataContainer
 
 class System:
 
-    def __init__(self, data: DataContainer=None):
+    def __init__(self, data: DataContainer=DataContainer()):
         self.data = data
         pass
 
@@ -20,6 +20,12 @@ class System:
             print("LOAD_PARAMETER:default")
             param = get_default_param()
             self.data.parameter = param
+
+    def get_work_dir(self):
+        return self.data.parameter['System']['work_folder']
+
+    def get_pulgin_dir(self):
+        return self.data.parameter['System']['plugin_folder']
 
     def get_data_dir(self):
         work_dir = self.data.parameter["System"]["work_folder"]

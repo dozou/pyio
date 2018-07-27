@@ -5,6 +5,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtChart import *
 
 
+
 class RangeView(QWidget):
     stop = None
     start = None
@@ -69,8 +70,7 @@ class LabelOnSpinBox(QWidget):
         label += ":"
         self.label += label
         self.label += "<\div>"
-        self.LineEdit = QSpinBox() if type(val) == int else self.LineEdit
-        self.LineEdit = QDoubleSpinBox() if type(val) == float else self.LineEdit
+        self.LineEdit = QDoubleSpinBox() if type(val) == float else QSpinBox()
         self.LineEdit.setMaximum(maximum)
         self.LineEdit.setValue(val)
 

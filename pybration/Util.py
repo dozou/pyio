@@ -50,6 +50,4 @@ class System:
         for i,d in enumerate(dir_str):
             dir_str[i] = d.replace("//", "/")
             dir_str[i] = d.replace("~", os.environ['HOME'])
-        if len(dir_str) == 1:
-            return dir_str[0]
         return dir_str

@@ -25,9 +25,7 @@ class System:
         work_dir = self.data.parameter["System"]["work_folder"]
         sub_name = "/" + str(self.data.parameter['ExperimentInfo']['subject_name'])
         eid = str(self.data.parameter['ExperimentInfo']['experiment_id'])
-        d = datetime.datetime.today()
-        dir_name = d.strftime("%m%d")
-        dir_name = dir_name + "_EID" + str(eid)
+        dir_name = "EID" + str(eid)
         work_dir = work_dir + "/" + dir_name
         work_dir = self.check_dir_str(work_dir)
         if not os.path.exists(work_dir):
@@ -44,6 +42,4 @@ class System:
         for i,d in enumerate(dir_str):
             dir_str[i] = d.replace("//", "/")
             dir_str[i] = d.replace("~", os.environ['HOME'])
-        if len(dir_str) == 1:
-            return dir_str[0]
         return dir_str

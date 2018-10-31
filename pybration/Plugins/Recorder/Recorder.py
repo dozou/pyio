@@ -148,7 +148,7 @@ class Viewer(QWidget):
                 wave_data.to_csv(raw_file_name+"_dev"+str(i)+'_ch2_wave.csv')
 
 
-class Recorder(IPlugin, Plugin):
+class Recorder(Plugin):
 
     def __init__(self):
         super().__init__()

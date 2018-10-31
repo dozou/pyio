@@ -59,7 +59,7 @@ class Viewer(QWidget):
         self.resize(1000, 500)
 
 
-class RawSignalViewer(IPlugin, Plugin):
+class RawSignalViewer(Plugin):
     def __init__(self):
         super().__init__()
         self.view = None  # type:Viewer

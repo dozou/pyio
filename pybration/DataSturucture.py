@@ -1,5 +1,6 @@
 # coding:utf-8
 from PyQt5.QtCore import QThread
+from yapsy.IPlugin import IPlugin
 
 
 class DataContainer(QThread):
@@ -17,8 +18,9 @@ class DataContainer(QThread):
         return ans_data
 
 
-class Plugin:
+class Plugin(IPlugin):
     def __init__(self, data: DataContainer = None):
+        super(Plugin, self).__init__()
         self.data = data  # type:DataContainer
         self.param = True
 

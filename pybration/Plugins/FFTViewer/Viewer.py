@@ -109,7 +109,7 @@ class Viewer(QWidget):
         self.resize(1000, 800)
 
 
-class FFTViewer(IPlugin, Plugin):
+class FFTViewer(Plugin):
     def __init__(self):
         super().__init__()
         self.view = None  # type:Viewer

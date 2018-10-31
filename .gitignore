@@ -233,3 +233,4 @@ Data/
 !Plugin/RawSignalViewer
 !Plugin/Recorder
 
+.pyc

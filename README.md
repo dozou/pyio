@@ -38,9 +38,22 @@ C++の修行は数十年かかるからPython使おうぜ！！
 pybrationは竹村研民による竹村研民のための研究支援ツールです．
 開発者は随時募集していますので何かあれば骨班の院生に聞いてみてください．
 
-### Release notes
+### Release note
 
-#### v0.1.x(現行)
+#### v1.0.0
+
+**破壊的変更があるため，v0.1.6以前とのプラグイン互換性がありません！**
+
+* Plugin・IPlugin多重継承の禁止(Pluginのみの継承でOKになりました)
+* 組み込み済みから次のプラグイン削除
+    * Recorder
+    * FFTViewer
+    * RawSignalViewer
+
+
+##### v0.1.6
+
+* LienEditなどの修正
 
 ##### v0.1.5
 
@@ -79,13 +92,6 @@ Python3.7による動作を確認
 * IODeviceやDataStructureなどのデータフォーマット提供
 * プラグイン機能による個人開発環境の提供
 
-
-#### v0.2.x(開発中)
-
-以下を変更予定
-
-* AnalogDiscoveryをプラグインとして実装
-* 設定（AnalogDiscovery）を登録済みIODeviceの管理用UIに再実装
 
 ### ライセンスとか ###
 

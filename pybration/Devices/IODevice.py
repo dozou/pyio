@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from enum import *
+import numpy as np
 
 
 class Echannel(Enum):
@@ -16,17 +17,18 @@ class IODevice:
                      "type": "none",
                      }
 
-    def open_device(self):
-        pass
+    def open_device(self)->bool:
+        raise Exception("open_device() require define.")
 
-    def close_device(self):
-        pass
+    def close_device(self)->bool:
+        raise Exception("close_device() require define.")
 
-    def is_open(self):
+    def is_open(self)->bool:
         return False
 
-    def get_serial(self):
+    def get_serial(self)->str:
         return ""
 
-    def get_value(self):
-        return []
+    def get_value(self)->np.ndarray:
+        v = np.array([0])
+        return v

@@ -1,7 +1,0 @@
-[Core]
-Name = レコーダ
-Module = Recorder
-
-[Documentation]
-Author = Nobunobu
-Version = 0.1

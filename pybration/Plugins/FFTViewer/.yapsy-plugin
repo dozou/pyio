@@ -1,8 +1,0 @@
-[Core]
-Name = FFTViewer
-Module = Viewer
-Categories = rwr
-
-[Documentation]
-Author = Nobunobu
-Version = 0.1

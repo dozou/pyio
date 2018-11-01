@@ -2,8 +2,11 @@
 import os
 import sys
 import json
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel
+from PyQt5.QtWidgets import QPushButton, QVBoxLayout
+from PyQt5.QtCore import QTimer
 from yapsy.PluginManager import PluginManager
-from pybration.Window.DeviceWindow import *
+# from pybration.Window.DeviceWindow import *
 from pybration.System.System import *
 from pybration.DataSturucture import *
 from pybration.Tools.Json import get_default_param
@@ -32,12 +35,11 @@ class MainWindow(QWidget):
         self.manager.collectPlugins()
         self.setWindowTitle("Pybration")
         self.face = QLabel()
-        self.setting_manager = DeviceManagerWindow(parent=parent, data=self.data)
-        # self.face.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
+        # self.setting_manager = DeviceManagerWindow(parent=parent, data=self.data)
         self.face.setFixedHeight(20)  # 高さ固定
         self.face.setText(self.face_data[0])
-        self.device_manager_button = QPushButton("設定")
-        self.device_manager_button.clicked.connect(self.setting_manager.show)
+        self.setting_manager_button = QPushButton("設定")
+        # self.device_manager_button.clicked.connect(self.setting_manager.show)
 
         self.plugin_button = []
         self.plugin_start_func = []
@@ -71,7 +73,7 @@ class MainWindow(QWidget):
     def update_layout(self):
         layout = QVBoxLayout()
         layout.addWidget(self.face)
-        layout.addWidget(self.device_manager_button)
+        layout.addWidget(self.setting_manager_button)
         for i in range(len(self.plugin_button)):
             layout.addWidget(self.plugin_button[i])
         layout.addWidget(self.date)

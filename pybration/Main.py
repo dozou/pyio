@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QPushButton, QVBoxLayout
 from PyQt5.QtCore import QTimer
 from yapsy.PluginManager import PluginManager
 # from pybration.Window.DeviceWindow import *
-from pybration.System.System import *
+from pybration.Util import System
 from pybration.DataSturucture import *
 from pybration.Tools.Json import get_default_param
 import datetime

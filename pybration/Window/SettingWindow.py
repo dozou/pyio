@@ -1,5 +1,6 @@
 from pybration.Window.LineEdit import *
-from pybration.Window.DeviceWindow import *
+# from pybration.Window.DeviceWindow import *
+from pybration.DataSturucture import DataContainer
 from PyQt5.QtChart import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -20,18 +21,16 @@ class ManageWorkDirecory(QWidget):
 
 
 class SettingWindow(QWidget):
-    device_manager = None
-    directory_manager = None
 
-    def __init__(self):
-        super(SettingWindow, self).__init__()
+    def __init__(self, parent, data:DataContainer):
+        super(SettingWindow, self).__init__(parent=parent)
         self.setWindowTitle("設定")
-        self.device_manager = DeviceManagerWindow()
-        self.directory_manager = ManageWorkDirecory()
+        # self.device_manager = DeviceManagerWindow()
+        # self.directory_manager = ManageWorkDirecory()
 
         main_layout = QHBoxLayout()
         #main_layout.addWidget(self.directory_manager)
-        main_layout.addWidget(self.device_manager)
+        # main_layout.addWidget(self.device_manager)
 
         self.setLayout(main_layout)
 

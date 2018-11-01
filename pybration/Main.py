@@ -2,16 +2,16 @@
 import os
 import sys
 import json
+import time
+import datetime
 from PyQt5.QtWidgets import QWidget, QApplication, QLabel
 from PyQt5.QtWidgets import QPushButton, QVBoxLayout
 from PyQt5.QtCore import QTimer
 from yapsy.PluginManager import PluginManager
-# from pybration.Window.DeviceWindow import *
 from pybration.Util import System
-from pybration.DataSturucture import *
+from pybration.DataSturucture import DataContainer
 from pybration.Tools.Json import get_default_param
-import datetime
-import time
+from pybration.Window.SettingWindow import SettingWindow
 
 
 class MainWindow(QWidget):
@@ -28,23 +28,26 @@ class MainWindow(QWidget):
         self.check_json()
         for p in self.data.parameter['System']['plugin_folder']:
             sys.path.append(self.system.check_dir_str(p))
-        self.manager = PluginManager()
-        plugin_dir = [os.path.join(os.path.dirname(__file__), "Plugins")]
-        plugin_dir.extend(self.data.parameter['System']['plugin_folder'])
-        self.manager.setPluginPlaces(self.system.check_dir_str(plugin_dir))
-        self.manager.collectPlugins()
+
         self.setWindowTitle("Pybration")
         self.face = QLabel()
-        # self.setting_manager = DeviceManagerWindow(parent=parent, data=self.data)
+
         self.face.setFixedHeight(20)  # 高さ固定
         self.face.setText(self.face_data[0])
-        self.setting_manager_button = QPushButton("設定")
-        # self.device_manager_button.clicked.connect(self.setting_manager.show)
+
+        """
+        プラグインの初期化
+        """
+        self.plugin_manager = PluginManager()
+        plugin_dir = [os.path.join(os.path.dirname(__file__), "Plugins")]
+        plugin_dir.extend(self.data.parameter['System']['plugin_folder'])
+        self.plugin_manager.setPluginPlaces(self.system.check_dir_str(plugin_dir))
+        self.plugin_manager.collectPlugins()
 
         self.plugin_button = []
         self.plugin_start_func = []
 
-        for i, plugin in enumerate(self.manager.getAllPlugins()):
+        for i, plugin in enumerate(self.plugin_manager.getAllPlugins()):
             print("LOAD_PLUGIN:" + str(plugin.name))
             if not self.data.parameter['Plugins'].get(plugin.name):
                 self.data.parameter['Plugins'][str(plugin.name)] = {}
@@ -56,6 +59,13 @@ class MainWindow(QWidget):
                 self.plugin_button.append(button)
             else:
                 plugin.plugin_object.run()
+
+        """
+        設定ウィンドウの初期化
+        """
+        self.setting_manager = SettingWindow(parent=parent, data=self.data)
+        self.setting_manager_button = QPushButton("設定")
+        self.setting_manager_button.clicked.connect(self.setting_manager.show)
 
         self.date = QLabel()
         # self.date.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示

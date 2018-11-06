@@ -113,13 +113,9 @@ class MainWindow(QWidget):
         # d = datetime.datetime.today()
         d = datetime.datetime.now()
         day_time_str = d.strftime("%Y-%m-%d %H:%M:%S")
-        day_time_atranta = d - datetime.timedelta(hours=13)
-        day_time_atranta_str = day_time_atranta.strftime("%Y-%m-%d %H:%M:%S")
         self.date.setText('<div>'
                           + '<center>'
                           + day_time_str
-                          + '<br />'
-                          + day_time_atranta_str
                           + '</center>'
                           + '</div>'
                           )

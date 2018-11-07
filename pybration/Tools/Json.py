@@ -18,6 +18,7 @@ class Json:
 def get_default_param():
     param = {
             "System": {
+                "param_format_version": "0.0.1",
                 "setting_folder": "~/.pybration/",
                 "plugin_folder": [],
                 "work_folder": ""

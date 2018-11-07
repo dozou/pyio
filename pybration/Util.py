@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
 import os
+import sys
 import json
+import re
 from pybration.Tools.Json import get_default_param
 from pybration.DataSturucture import DataContainer
 from pkg_resources import get_distribution
@@ -11,13 +13,17 @@ class System:
 
     def __init__(self, data: DataContainer=DataContainer()):
         self.data = data
-        pass
 
     def load_param(self)->DataContainer:
         try:
             print("LOAD_PARAMETER:"+os.environ['HOME']+"/.pybration/param.json")
             param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
             self.data.parameter = json.load(param)
+            path = self._find_list(sys.path, ".*site-packages.*")[0]
+            # print(path)
+            write_path = self.data.parameter['System']['plugin_folder']
+            write_path = self.check_dir_str(write_path)
+            self._generate_path_file(path + "/pybration_plugin.pth", write_path)
             return self.data
         except IOError:
             print("LOAD_PARAMETER:default")
@@ -58,3 +64,22 @@ class System:
             dir_str[i] = d.replace("//", "/")
             dir_str[i] = d.replace("~", os.environ['HOME'])
         return dir_str
+
+    def _find_list(self, v: list, regex: str):
+        r = re.compile(regex)
+        v = [x for x in v if r.match(x)]
+        return v
+
+    def _generate_path_file(self, path: str, write_data: list):
+        str_data = str()
+        for i in write_data:
+            str_data += i + "\n"
+
+        with open(path, "r") as file:
+            if str_data == file.read():
+                return
+        with open(path, "w") as file:
+            print("Update of "+path)
+            print("Please restart for load module.")
+            file.write(str_data)
+            exit()

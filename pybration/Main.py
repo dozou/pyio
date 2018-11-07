@@ -23,11 +23,11 @@ class MainWindow(QWidget):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.data = DataContainer()
-        self.system = System(self.data)
-        self.check_json()
-        for p in self.data.parameter['System']['plugin_folder']:
-            sys.path.append(self.system.check_dir_str(p))
+        # self.data = DataContainer()
+        self.system = System()
+        self.data = self.system.load_param()
+        # for p in self.data.parameter['System']['plugin_folder']:
+        #     sys.path.self.system.check_dir_str(p))
 
         self.setWindowTitle("Pybration")
         self.face = QLabel()
@@ -46,24 +46,30 @@ class MainWindow(QWidget):
 
         self.plugin_button = []
         self.plugin_start_func = []
+        self.external_setting_windows = []
 
         for i, plugin in enumerate(self.plugin_manager.getAllPlugins()):
-            print("LOAD_PLUGIN:" + str(plugin.name))
+            print("LOAD_PLUGIN(v" + str(plugin.version) + "): " + str(plugin.name))
             if not self.data.parameter['Plugins'].get(plugin.name):
                 self.data.parameter['Plugins'][str(plugin.name)] = {}
 
-            plugin.plugin_object.set_parent_data(self.data)
+            """プラグインの初期化"""
+            plugin.plugin_object.init(self.data)
+
             if plugin.plugin_object.enable_button():
                 button = QPushButton(str(plugin.name))
                 button.clicked.connect(plugin.plugin_object.clicked)
                 self.plugin_button.append(button)
-            else:
-                plugin.plugin_object.run()
+            if plugin.plugin_object.enable_setting_window():
+                self.external_setting_windows.append(plugin.plugin_object.get_setting_window())
+
 
         """
         設定ウィンドウの初期化
         """
-        self.setting_manager = SettingWindow(parent=parent, data=self.data)
+        self.setting_manager = SettingWindow(parent=parent,
+                                             data=self.data,
+                                             window=self.external_setting_windows)
         self.setting_manager_button = QPushButton("設定")
         self.setting_manager_button.clicked.connect(self.setting_manager.show)
 
@@ -88,16 +94,6 @@ class MainWindow(QWidget):
             layout.addWidget(self.plugin_button[i])
         layout.addWidget(self.date)
         self.setLayout(layout)
-
-    def check_json(self):
-        try:
-            print("LOAD_PARAMETER:"+os.environ['HOME']+"/.pybration/param.json")
-            param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
-            self.data.parameter = json.load(param)
-        except IOError:
-            print("LOAD_PARAMETER:default")
-            param = get_default_param()
-            self.data.parameter = param
 
     """
         ショボーンを回転させるためのメソッドです
@@ -169,7 +165,7 @@ def main():
     myWindow = MainWindow()
     myWindow.show()
     myApp.exec_()
-    sys.exit(0)
+    # sys.exit(0)
 
 
 if __name__ == "__main__":

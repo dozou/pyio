@@ -2,7 +2,9 @@
 import datetime
 import os
 import json
+from pybration.Tools.Json import get_default_param
 from pybration.DataSturucture import DataContainer
+from pkg_resources import get_distribution
 
 
 class System:
@@ -11,15 +13,17 @@ class System:
         self.data = data
         pass
 
-    def load_param(self):
+    def load_param(self)->DataContainer:
         try:
             print("LOAD_PARAMETER:"+os.environ['HOME']+"/.pybration/param.json")
             param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
             self.data.parameter = json.load(param)
+            return self.data
         except IOError:
             print("LOAD_PARAMETER:default")
             param = get_default_param()
             self.data.parameter = param
+        return None
 
     def get_work_dir(self):
         return self.data.parameter['System']['work_folder']
@@ -42,6 +46,9 @@ class System:
         if not os.path.exists(work_dir):
             os.mkdir(work_dir)
         return work_dir
+
+    def get_version(self):
+        return get_distribution("Pybration").version
 
     def check_dir_str(self, dir_str: list):
         if str is type(dir_str):

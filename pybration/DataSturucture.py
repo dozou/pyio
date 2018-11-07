@@ -1,6 +1,8 @@
 # coding:utf-8
 from PyQt5.QtCore import QThread
+from PyQt5.QtWidgets import QLayout, QWidget
 from yapsy.IPlugin import IPlugin
+from abc import ABC, abstractmethod
 
 
 class DataContainer(QThread):
@@ -18,30 +20,35 @@ class DataContainer(QThread):
         return ans_data
 
 
-class Plugin(IPlugin):
+class Plugin(ABC, IPlugin):
+
     def __init__(self, data: DataContainer = None):
         super(Plugin, self).__init__()
-        self.data = data  # type:DataContainer
-        self.param = True
+        self.data = None  # type:DataContainer
 
-    def set_parent_data(self, data: DataContainer):
-        self.data = data
+    def init(self, parent_data: DataContainer):
+        pass
 
     def clicked(self):
         print("PUSH_BUTTON")
 
-    def enable_button(self):
+    def enable_button(self)->bool:
         return False
 
-    def run(self):
-        pass
+    def enable_setting_window(self)->bool:
+        return False
 
     def get_device(self, dev_name: str):
         for dev in self.data.device:
             if dev.info['name'] == dev_name:
                 return dev
-        ValueError("Nothing "+dev_name)
+        raise ValueError("Nothing "+dev_name)
 
     def get_dir(self):
         return ""
+
+    def get_setting_window(self)->QWidget:
+        default_layout = QWidget()
+        return default_layout
+
 

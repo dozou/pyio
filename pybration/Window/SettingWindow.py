@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pybration.DataSturucture import DataContainer
-from PyQt5.QtWidgets import *
-from pybration.Util import System
+from PyQt5.QtWidgets import QGroupBox, QVBoxLayout,QWidget
+from PyQt5.Qt import Qt
 
 
 class ManageWorkDirecory(QWidget):
@@ -17,19 +17,22 @@ class ManageWorkDirecory(QWidget):
         self.setLayout(layout)
 
 
-
 class SettingWindow(QWidget):
 
     def __init__(self, parent, data: DataContainer, window):
         super(SettingWindow, self).__init__(parent=parent)
         self.setWindowTitle("設定")
-        system = System()
+        self.setContentsMargins(10,10,10,10)
         # self.device_manager = DeviceManagerWindow()
 
-        main_layout = QHBoxLayout()
-        #main_layout.addWidget(self.directory_manager)
-        # main_layout.addWidget(self.device_manager)
+        main_layout = QVBoxLayout()
+        # self.setWindowFlags(Qt.Window)
 
+        for i in window:  # type:QGroupBox
+            # i.setWindowFlags(Qt.MSWindowsFixedSizeDialogHint)
+            main_layout.addWidget(i)
+
+        main_layout.addStretch()
         self.setLayout(main_layout)
 
 

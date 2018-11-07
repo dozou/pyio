@@ -20,16 +20,15 @@ class System:
             param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
             self.data.parameter = json.load(param)
             path = self._find_list(sys.path, ".*site-packages.*")[0]
-            # print(path)
             write_path = self.data.parameter['System']['plugin_folder']
             write_path = self.check_dir_str(write_path)
             self._generate_path_file(path + "/pybration_plugin.pth", write_path)
-            return self.data
+
         except IOError:
             print("LOAD_PARAMETER:default")
             param = get_default_param()
             self.data.parameter = param
-        return None
+        return self.data
 
     def get_work_dir(self):
         return self.data.parameter['System']['work_folder']

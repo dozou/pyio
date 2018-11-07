@@ -1,6 +1,6 @@
 # coding:utf-8
 from PyQt5.QtCore import QThread
-from PyQt5.QtWidgets import QLayout, QWidget
+from PyQt5.QtWidgets import QLayout, QWidget, QGroupBox
 from yapsy.IPlugin import IPlugin
 from abc import ABC, abstractmethod
 
@@ -47,7 +47,7 @@ class Plugin(ABC, IPlugin):
     def get_dir(self):
         return ""
 
-    def get_setting_window(self)->QWidget:
+    def get_setting_window(self)->QGroupBox:
         default_layout = QWidget()
         return default_layout
 

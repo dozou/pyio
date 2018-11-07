@@ -7,6 +7,7 @@ import datetime
 from PyQt5.QtWidgets import QWidget, QApplication, QLabel
 from PyQt5.QtWidgets import QPushButton, QVBoxLayout
 from PyQt5.QtCore import QTimer
+from PyQt5.Qt import Qt
 from yapsy.PluginManager import PluginManager
 from pybration.Util import System
 from pybration.DataSturucture import DataContainer
@@ -24,10 +25,9 @@ class MainWindow(QWidget):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         # self.data = DataContainer()
+        self.setWindowFlags(Qt.Dialog)
         self.system = System()
         self.data = self.system.load_param()
-        # for p in self.data.parameter['System']['plugin_folder']:
-        #     sys.path.self.system.check_dir_str(p))
 
         self.setWindowTitle("Pybration")
         self.face = QLabel()
@@ -48,7 +48,16 @@ class MainWindow(QWidget):
         self.plugin_start_func = []
         self.external_setting_windows = []
 
-        for i, plugin in enumerate(self.plugin_manager.getAllPlugins()):
+        plugins = []
+
+        for i in self.plugin_manager.getAllPlugins():
+            plugins.append((i.name, i))
+
+        plugins = sorted(plugins)
+
+        plugins = [i[1] for i in plugins]
+
+        for i, plugin in enumerate(plugins):
             print("LOAD_PLUGIN(v" + str(plugin.version) + "): " + str(plugin.name))
             if not self.data.parameter['Plugins'].get(plugin.name):
                 self.data.parameter['Plugins'][str(plugin.name)] = {}
@@ -56,10 +65,12 @@ class MainWindow(QWidget):
             """プラグインの初期化"""
             plugin.plugin_object.init(self.data)
 
+            """プラグインボタンの表示設定"""
             if plugin.plugin_object.enable_button():
                 button = QPushButton(str(plugin.name))
                 button.clicked.connect(plugin.plugin_object.clicked)
                 self.plugin_button.append(button)
+            """プラグイン設定項目の追加"""
             if plugin.plugin_object.enable_setting_window():
                 self.external_setting_windows.append(plugin.plugin_object.get_setting_window())
 
@@ -67,14 +78,14 @@ class MainWindow(QWidget):
         """
         設定ウィンドウの初期化
         """
-        self.setting_manager = SettingWindow(parent=parent,
+        self.setting_manager = SettingWindow(parent=self.parent(),
                                              data=self.data,
                                              window=self.external_setting_windows)
         self.setting_manager_button = QPushButton("設定")
         self.setting_manager_button.clicked.connect(self.setting_manager.show)
 
         self.date = QLabel()
-        # self.date.setFrameStyle( QFrame.Panel | QFrame.Sunken ) # 枠表示
+        # self.date.setFrameStyle( QFrame.Panel | Qt.QFrame.Sunken ) # 枠表示
         self.date.setFixedHeight(20 * 2)  # 高さ固定
         self.update_layout()
 

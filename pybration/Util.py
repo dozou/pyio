@@ -24,7 +24,7 @@ class System:
             write_path = self.check_dir_str(write_path)
             self._generate_path_file(path + "/pybration_plugin.pth", write_path)
 
-        except IOError:
+        except IOError as e:
             print("LOAD_PARAMETER:default")
             param = get_default_param()
             self.data.parameter = param
@@ -74,9 +74,13 @@ class System:
         for i in write_data:
             str_data += i + "\n"
 
-        with open(path, "r") as file:
-            if str_data == file.read():
-                return
+        try:
+            with open(path, "r") as file:
+                if str_data == file.read():
+                    return
+        except IOError:
+            pass
+
         with open(path, "w") as file:
             print("Update of "+path)
             print("Please restart for load module.")

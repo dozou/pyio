@@ -125,7 +125,6 @@ class MainWindow(QWidget):
     """
     時刻表示のためのメソッド
     """
-
     def time_draw(self):
         # d = datetime.datetime.today()
         d = datetime.datetime.now()
@@ -140,7 +139,6 @@ class MainWindow(QWidget):
     """
     時刻表示のタイミングを(無理やり)合わせるためのメソッド
     """
-
     def wait_0_microsecond(self):
         print("Adjust the time... Please Waiting...")
         wait_s = 0.0000001

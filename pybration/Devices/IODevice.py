@@ -32,3 +32,6 @@ class IODevice:
     def get_value(self)->np.ndarray:
         v = np.array([0])
         return v
+
+    def get_shape(self):
+        return np.array([0]).shape

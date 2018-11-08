@@ -25,7 +25,6 @@ class MainWindow(QWidget):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        # self.data = DataContainer()
         self.setWindowFlags(Qt.Dialog)
         self.system = System()
         self.data = self.system.load_param()

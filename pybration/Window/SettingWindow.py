@@ -8,6 +8,7 @@ class SettingWindow(QTabWidget):
 
     def __init__(self, parent, data: DataContainer, window):
         super(SettingWindow, self).__init__(parent=parent)
+        self.setWindowFlags(Qt.Dialog)
         self.setWindowTitle("設定")
         self.setContentsMargins(10, 10, 10, 10)
 

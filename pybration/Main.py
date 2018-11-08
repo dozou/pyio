@@ -6,6 +6,7 @@ import time
 import datetime
 from PyQt5.QtWidgets import QWidget, QApplication, QLabel
 from PyQt5.QtWidgets import QPushButton, QVBoxLayout
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import QTimer
 from PyQt5.Qt import Qt
 from yapsy.PluginManager import PluginManager
@@ -48,13 +49,11 @@ class MainWindow(QWidget):
         self.plugin_start_func = []
         self.external_setting_windows = []
 
+        """プラグインの呼び込み順番を修正"""
         plugins = []
-
         for i in self.plugin_manager.getAllPlugins():
             plugins.append((i.name, i))
-
         plugins = sorted(plugins)
-
         plugins = [i[1] for i in plugins]
 
         for i, plugin in enumerate(plugins):
@@ -70,10 +69,10 @@ class MainWindow(QWidget):
                 button = QPushButton(str(plugin.name))
                 button.clicked.connect(plugin.plugin_object.clicked)
                 self.plugin_button.append(button)
+
             """プラグイン設定項目の追加"""
             if plugin.plugin_object.enable_setting_window():
                 self.external_setting_windows.append(plugin.plugin_object.get_setting_window())
-
 
         """
         設定ウィンドウの初期化
@@ -171,8 +170,7 @@ def main():
     myApp = QApplication(sys.argv)
     myWindow = MainWindow()
     myWindow.show()
-    myApp.exec_()
-    # sys.exit(0)
+    return myApp.exec()
 
 
 if __name__ == "__main__":

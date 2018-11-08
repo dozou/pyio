@@ -29,6 +29,12 @@ class System:
             param = get_default_param()
             self.data.parameter = param
         return self.data
+    
+    def write_param(self):
+        if not os.path.exists(os.environ['HOME']+"/.pybration"):
+            os.mkdir(os.environ['HOME']+"/.pybration")
+        fw = open(os.environ['HOME']+"/.pybration/param.json", 'w')
+        json.dump(self.data.parameter, fw, indent=4)
 
     def get_work_dir(self):
         return self.data.parameter['System']['work_folder']

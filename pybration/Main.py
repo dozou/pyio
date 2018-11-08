@@ -158,10 +158,7 @@ class MainWindow(QWidget):
         for dev in self.data.device:
             if dev.is_open():
                 dev.close_device()
-        if not os.path.exists(os.environ['HOME']+"/.pybration"):
-            os.mkdir(os.environ['HOME']+"/.pybration")
-        fw = open(os.environ['HOME']+"/.pybration/param.json", 'w')
-        json.dump(self.data.parameter, fw, indent=4)
+        self.system.write_param()
         quit()
 
 

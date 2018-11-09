@@ -1,6 +1,7 @@
 # coding:utf-8
 from PyQt5.QtCore import QThread
 from PyQt5.QtWidgets import QLayout, QWidget, QGroupBox
+from pybration.Devices.DeviceManager import DeviceManager
 from yapsy.IPlugin import IPlugin
 from abc import ABC, abstractmethod
 
@@ -8,9 +9,10 @@ from abc import ABC, abstractmethod
 class DataContainer(QThread):
     def __init__(self):
         super().__init__()
-        self.device = []
+        self.device = DeviceManager()
         self.parameter = {}
         self.scale = None
+        print(type(self.device))
         pass
 
     def get_ai(self):

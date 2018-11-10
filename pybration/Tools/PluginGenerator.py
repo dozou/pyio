@@ -3,7 +3,7 @@ import sys
 import os
 
 
-class Generator:
+class PluginGenerator:
     def __init__(self):
         self.info = dict()
         self.info['plugin_name'] = None
@@ -52,18 +52,17 @@ class Generator:
         with open(template_file, 'r') as file:
             template = file.read()
 
-        template = template.replace("$module$", self.info['module'])
-        template = template.replace("$button$", self.info['button'])
+        for i in self.info:
+            template = template.replace("$%s$" % i, self.info[i])
 
         with open(file_name,"w") as file:
             file.write(template)
-        print(template)
 
 
-def PluginGenerator():
+def pyb_create():
     # print(os.getcwd())
     print(os.path.dirname(os.path.abspath(__file__)))
-    plugin_obj = Generator()
+    plugin_obj = PluginGenerator()
     print("-----------------------------")
     print("| Pybration Plugin Generator |")
     print("-----------------------------")
@@ -74,11 +73,6 @@ def PluginGenerator():
 
     print("[author]: ", end="")
     plugin_obj.info['author'] = input()
-
-    print("[module (default App)]: ", end="")
-    s = input()
-    if s != "":
-        plugin_obj.info['module'] = s
 
     print("Do you use button function? [y/n]: ", end='')
     s = input()
@@ -94,4 +88,4 @@ def PluginGenerator():
 
 
 if __name__ == '__main__':
-    PluginGenerator()
+    pyb_create()

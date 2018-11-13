@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from PyQt5.Qt import Qt
 from pybration.DataSturucture import Plugin
+from pybration.Main import main
 
 
 class $module$(Plugin):
     def __init__(self):
         super().__init__()
+        # self.setWindowFlags(Qt.Dialog)
         self.window = None
 
     def init(self, data):
@@ -15,3 +18,7 @@ class $module$(Plugin):
 
     def clicked(self):
         print("click!!")
+
+
+if "__main__" == __name__:
+    main()

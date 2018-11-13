@@ -32,6 +32,9 @@ class IODevice(ABC):
     def is_open(self)->bool:
         return False
 
+    def set_value(self, obj):
+        pass
+
     def get_serial(self)->str:
         return ""
 

@@ -18,7 +18,10 @@ class DeviceManager(list):
                     obj.info['id'] = id
                     self[i] = obj
                     return
-        raise ValueError("please check device id.")
+            obj.info['id'] = id
+            super(DeviceManager, self).append(obj)
+            return
+        # raise ValueError("please check device id.")
 
     def __issue_id(self):
         new_id = 0

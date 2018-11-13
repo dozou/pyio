@@ -32,6 +32,11 @@ class ChartObject(QThread):
             return
         self.color_ch1 = Qt.green
         self.color_ch2 = Qt.red
+        self.color_list = [
+            Qt.green,
+            Qt.red,
+            Qt.cyan
+        ]
         self.timer = QTimer()
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.update_data)
@@ -56,14 +61,10 @@ class ChartObject(QThread):
 
     def update_data(self):
         self.clear_data()
-        ydata = self.data.get_ai()[0][0]
-        if self.data.scale is None:
+        for c, dev in zip(self.color_list,self.data.device):
+            ydata = dev.get_value()
             xdata = np.linspace(0, len(ydata), len(ydata))
-        else:
-            xdata = self.data.scale
-        self.add_data(xdata, ydata, self.color_ch1)
-        ydata = self.data.get_ai()[0][1]
-        self.add_data(xdata, ydata, self.color_ch2)
+            self.add_data(xdata, ydata, c)
 
     def clear_data(self):
         self.chart.removeAllSeries()

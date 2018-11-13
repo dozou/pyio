@@ -41,14 +41,14 @@ class PluginGenerator:
             file.write("[Core]\n")
             file.write("Name = %s\n" % self.info['plugin_name'])
             file.write("Module = %s\n" % self.info['module'])
-            file.write("\n\n")
+            file.write("\n")
             file.write("[Documentation]\n")
             file.write("Author = %s\n" % self.info['author'])
             file.write("Version = %s\n" % self.info['version'])
 
     def __mk_python_file(self):
         file_name = self.info['dir_name'] + "/" + self.info['module'] + ".py"
-        template_file = os.path.dirname(os.path.abspath(__file__)) + "/plugin_basis.py"
+        template_file = os.path.dirname(os.path.abspath(__file__)) + "/plugin_basis.template"
         with open(template_file, 'r') as file:
             template = file.read()
 

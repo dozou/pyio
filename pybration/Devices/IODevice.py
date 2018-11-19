@@ -4,12 +4,6 @@ import numpy as np
 from abc import ABC,abstractmethod
 
 
-class Echannel(Enum):
-    ch_1 = 0
-    ch_2 = 1
-    ch_all = 2
-
-
 class IODevice(ABC):
 
     @abstractmethod
@@ -18,6 +12,7 @@ class IODevice(ABC):
             "name": "none",
             "id": 0,
             "type": "none",
+            "ch": -1,
         }
 
     @abstractmethod
@@ -32,11 +27,20 @@ class IODevice(ABC):
     def is_open(self)->bool:
         return False
 
+    def set_property(self):
+        pass
+
     def set_value(self, obj):
         pass
 
     def get_serial(self)->str:
         return ""
+
+    def get_1d_array(self)->np.ndarray:
+        return np.array([0])
+
+    def get_2d_array(self)->np.ndarray:
+        return np.array([0])
 
     def get_value(self)->np.ndarray:
         v = np.array([0])

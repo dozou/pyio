@@ -28,6 +28,7 @@ class ChartObject(QThread):
         self.chart = QChart()
         self.chart.legend().hide()
         self.data = data
+        print(self.data.device)
         if not self.data.device[0].is_open():
             return
         self.color_ch1 = Qt.green
@@ -35,7 +36,8 @@ class ChartObject(QThread):
         self.color_list = [
             Qt.green,
             Qt.red,
-            Qt.cyan
+            Qt.cyan,
+            Qt.blue
         ]
         self.timer = QTimer()
         self.timer.setInterval(100)
@@ -61,8 +63,8 @@ class ChartObject(QThread):
 
     def update_data(self):
         self.clear_data()
-        for c, dev in zip(self.color_list,self.data.device):
-            ydata = dev.get_value()
+        for c, dev in zip(self.color_list, self.data.device):
+            ydata = dev.get_1d_array()
             xdata = np.linspace(0, len(ydata), len(ydata))
             self.add_data(xdata, ydata, c)
 

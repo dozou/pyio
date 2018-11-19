@@ -23,6 +23,12 @@ class DeviceManager(list):
             return
         # raise ValueError("please check device id.")
 
+    def delete(self, id:int):
+        for idx, d in enumerate(self):
+            if d.info['id'] == id:
+                self.pop(idx)
+                print("%s を削除" % d)
+
     def __issue_id(self):
         new_id = 0
         for i in self:

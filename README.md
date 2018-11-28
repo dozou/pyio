@@ -1,7 +1,7 @@
 Pybration
 =========
 
-## これは何？
+# これは何？
  
 竹村研究室振動班による竹村研究室振動班のための研究支援ツールです  
 
@@ -11,12 +11,45 @@ Pybration
 * デモの作成
 * 取得データの確認及び検証
 
-### Installation
+# Requirement
 
-    pip3 install git+https://bitbucket.org/dozou/pybration_v1.git
+基本的にはPython3が動く環境であれば大丈夫です．
+以下は動作確認環境になります．
+
+* Python3 with pip (Recommended version is over 3.7)
+* MacOS or Linux(Ubuntu, Arch)
+
+# Installation
+
+    pip3 install git+https://bitbucket.org/dozou/pybration_v1.git --upgrade --user
+
+## First Settings.
+
+テキストエディタを用いて　`~/.pybration/param.json` を編集します．
+
+    "System": {
+        "param_format_version": "0.0.1",
+        "setting_folder": "~/.pybration/",
+        "plugin_folder": [],
+        "work_folder": ""
+    },
+
+`"plugin_folder: []"` に任意のプラグインを設置するディレクトリを指定してください.  
+
+e.g.)  
+
+   `plugins_dolder: ["~/pybration_plugins"]`
+
+**注意：""ダブルクォーテーションで必ず囲むこと**  
+
+同様に`"work_folder": ""`もディレクトリパスの設定を行うことで実験データの書き出しや，プラグインから参照を行うことが可能です．  
+
+
+# Documents
+
 
 
 ### ライセンスとか ###
  
-基本竹村研究室に属するよ！！研究室ないの仲間なら何しても構わへんで  
-でも消さないでね！！  
+基本竹村研究室に属します．
+ボスの意向に従って下さい．

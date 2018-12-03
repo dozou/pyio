@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import time
+import qdarkstyle
 import datetime
 from PyQt5.QtWidgets import QWidget, QApplication, QLabel
 from PyQt5.QtWidgets import QPushButton, QVBoxLayout
@@ -162,6 +163,7 @@ class MainWindow(QWidget):
 
 def main():
     myApp = QApplication(sys.argv)
+    myApp.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     myWindow = MainWindow()
     myWindow.show()
     return myApp.exec()

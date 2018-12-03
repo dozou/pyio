@@ -5,7 +5,6 @@ from PyQt5.QtCore import *
 from PyQt5.QtChart import *
 
 
-
 class RangeView(QWidget):
     stop = None
     start = None
@@ -15,6 +14,7 @@ class RangeView(QWidget):
         self.start = QSpinBox()
         self.stop = QSpinBox()
         self.start.setMaximum(10000)
+        self.start.setMinimum(-10000)
         self.stop.setMaximum(10000)
         self.start.setValue(start)
         self.stop.setValue(stop)

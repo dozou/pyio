@@ -13,9 +13,10 @@ class RangeView(QWidget):
         super(RangeView, self).__init__()
         self.start = QSpinBox()
         self.stop = QSpinBox()
-        self.start.setMaximum(10000)
-        self.start.setMinimum(-10000)
-        self.stop.setMaximum(10000)
+        self.start.setMaximum(1000000000.0)
+        self.start.setMinimum(-1000000000.0)
+        self.stop.setMaximum(100000000.0)
+        self.stop.setMinimum(-100000000.0)
         self.start.setValue(start)
         self.stop.setValue(stop)
 

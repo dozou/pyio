@@ -42,6 +42,9 @@ class IODevice(ABC):
     def get_2d_array(self)->np.ndarray:
         return np.array([0])
 
+    def get_x_scale(self):
+        return np.arange(0, len(self.get_1d_array()))
+
     def get_value(self)->np.ndarray:
         v = np.array([0])
         return v

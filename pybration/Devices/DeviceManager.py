@@ -36,6 +36,13 @@ class DeviceManager(list):
                 new_id += 1
         return new_id
 
+    def extract_device(self,name=None, type=None, id=None)->list:
+        device = []
+        for i in self:
+            if i.info['name'] == name or i.info['type'] == type or i.info['id'] == id:
+                device.append(i)
+        return device
+
     def print(self):
         for i in self:
             print(i.info)

@@ -18,7 +18,7 @@
 
 # Installation
 
-    pip3 install git+https://bitbucket.org/dozou/pybration_v1.git --upgrade --user
+    pip3 install git+https://bitbucket.org/kamoryo/pybration_v1.git --upgrade --user
 
 ## First Settings.
 

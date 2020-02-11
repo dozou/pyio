@@ -18,7 +18,7 @@
 
 # Installation
 
-    pip3 install git+https://[USERS]@bitbucket.org/takemuralab/pybration.git --upgrade --user
+    pip3 install git+https://[USERS]@bitbucket.org/takemuralab/pybration_v2.git --upgrade --user
 
 ## First Settings.
 

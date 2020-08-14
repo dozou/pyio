@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from pybration.DataSturucture import DataContainer
-from pybration.Window.LineEdit import LabelOnLineEdit, LabelOnSpinBox
+from pyio.DataSturucture import DataContainer
+from pyio.Window.LineEdit import LabelOnLineEdit, LabelOnSpinBox
 from PyQt5.QtWidgets import QLabel, QWidget, QVBoxLayout, QPushButton
 
 

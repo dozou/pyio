@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pybration.Devices.IODevice import IODevice
+from pyio.Devices.IODevice import IODevice
 
 
 class DeviceManager(list):

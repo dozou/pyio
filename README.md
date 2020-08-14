@@ -1,12 +1,6 @@
 # これは何？
 
-竹村研究室振動班による竹村研究室振動班のための研究支援ツールです  
-
-以下が想定の使用用途です．  
-
-* 実験データの取得
-* デモの作成
-* 取得データの確認及び検証
+いくつかのデバイスの可視化を行うために学生時代に開発したツールです．
 
 # Requirement
 
@@ -18,7 +12,7 @@
 
 # Installation
 
-    pip3 install git+https://[USERS]@bitbucket.org/takemuralab/pybration_v2.git --upgrade --user
+    pip3 install .
 
 ## First Settings.
 
@@ -54,12 +48,3 @@ plugin_name，author，ボタンを使うのかどうか聞かれるので，そ
 
 **出来ていなければ，何かがおかしいので頑張ってください．**
 
-
-# Documents
-
-
-
-### ライセンスとか ###
- 
-基本竹村研究室に属します．
-ボスの意向に従って下さい．

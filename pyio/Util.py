@@ -4,8 +4,8 @@ import os
 import sys
 import json
 import re
-from pybration.Tools.Json import get_default_param
-from pybration.DataSturucture import DataContainer
+from pyio.Tools.Json import get_default_param
+from pyio.DataSturucture import DataContainer
 from pkg_resources import get_distribution
 
 
@@ -16,8 +16,8 @@ class System:
 
     def load_param(self) -> DataContainer:
         try:
-            print("LOAD_PARAMETER:" + os.path.expanduser("~") + "/.pybration/param.json")
-            param = open(os.path.expanduser("~") + "/.pybration/param.json", 'r')
+            print("LOAD_PARAMETER:" + os.path.expanduser("~") + "/.pyio/param.json")
+            param = open(os.path.expanduser("~") + "/.pyio/param.json", 'r')
             self.data.parameter = json.load(param)
             path = self._find_list(sys.path, ".*site-packages.*")[0]
             write_path = self.data.parameter['System']['plugin_folder']
@@ -31,9 +31,9 @@ class System:
         return self.data
 
     def write_param(self):
-        if not os.path.exists(os.path.expanduser("~") + "/.pybration"):
-            os.mkdir(os.path.expanduser("~") + "/.pybration")
-        fw = open(os.path.expanduser("~") + "/.pybration/param.json", 'w')
+        if not os.path.exists(os.path.expanduser("~") + "/.pyio"):
+            os.mkdir(os.path.expanduser("~") + "/.pyio")
+        fw = open(os.path.expanduser("~") + "/.pyio/param.json", 'w')
         json.dump(self.data.parameter, fw, indent=4)
 
     def get_work_dir(self):

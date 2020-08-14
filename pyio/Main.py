@@ -11,10 +11,10 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import QTimer
 from PyQt5.Qt import Qt
 from yapsy.PluginManager import PluginManager
-from pybration.Util import System
-from pybration.DataSturucture import DataContainer
-from pybration.Tools.Json import get_default_param
-from pybration.Window.SettingWindow import SettingWindow
+from pyio.Util import System
+from pyio.DataSturucture import DataContainer
+from pyio.Tools.Json import get_default_param
+from pyio.Window.SettingWindow import SettingWindow
 
 
 class MainWindow(QWidget):

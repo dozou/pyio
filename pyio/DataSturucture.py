@@ -1,7 +1,7 @@
 # coding:utf-8
 from PyQt5.QtCore import QThread
 from PyQt5.QtWidgets import QLayout, QWidget, QGroupBox
-from pybration.Devices.DeviceManager import DeviceManager
+from pyio.Devices.DeviceManager import DeviceManager
 from yapsy.IPlugin import IPlugin
 from abc import ABC, abstractmethod
 

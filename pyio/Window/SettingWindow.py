@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pybration.DataSturucture import DataContainer
+from pyio.DataSturucture import DataContainer
 from PyQt5.QtWidgets import QGroupBox, QVBoxLayout, QWidget, QTabWidget
 from PyQt5.Qt import Qt
 

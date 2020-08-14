@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from pybration.DataSturucture import *
+from pyio.DataSturucture import *
 
 
 def series_to_polyline(xdata, ydata):

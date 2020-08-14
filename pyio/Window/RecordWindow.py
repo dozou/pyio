@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QRadioButton, QVBoxLayout
 from PyQt5.QtCore import pyqtSignal, QThread
-from pybration.Window.LineEdit import LabelOnSpinBox, LabelOnLineEdit
-from pybration.DataSturucture import DataContainer
+from pyio.Window.LineEdit import LabelOnSpinBox, LabelOnLineEdit
+from pyio.DataSturucture import DataContainer
 
 
 class Record(QThread):

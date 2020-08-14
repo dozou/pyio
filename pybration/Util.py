@@ -11,13 +11,13 @@ from pkg_resources import get_distribution
 
 class System:
 
-    def __init__(self, data: DataContainer=DataContainer()):
+    def __init__(self, data: DataContainer = DataContainer()):
         self.data = data
 
-    def load_param(self)->DataContainer:
+    def load_param(self) -> DataContainer:
         try:
-            print("LOAD_PARAMETER:"+os.environ['HOME']+"/.pybration/param.json")
-            param = open(os.environ['HOME']+"/.pybration/param.json", 'r')
+            print("LOAD_PARAMETER:" + os.path.expanduser("~") + "/.pybration/param.json")
+            param = open(os.path.expanduser("~") + "/.pybration/param.json", 'r')
             self.data.parameter = json.load(param)
             path = self._find_list(sys.path, ".*site-packages.*")[0]
             write_path = self.data.parameter['System']['plugin_folder']
@@ -29,11 +29,11 @@ class System:
             param = get_default_param()
             self.data.parameter = param
         return self.data
-    
+
     def write_param(self):
-        if not os.path.exists(os.environ['HOME']+"/.pybration"):
-            os.mkdir(os.environ['HOME']+"/.pybration")
-        fw = open(os.environ['HOME']+"/.pybration/param.json", 'w')
+        if not os.path.exists(os.path.expanduser("~") + "/.pybration"):
+            os.mkdir(os.path.expanduser("~") + "/.pybration")
+        fw = open(os.path.expanduser("~") + "/.pybration/param.json", 'w')
         json.dump(self.data.parameter, fw, indent=4)
 
     def get_work_dir(self):
@@ -65,9 +65,9 @@ class System:
         if str is type(dir_str):
             dir_str = [dir_str]
 
-        for i,d in enumerate(dir_str):
+        for i, d in enumerate(dir_str):
             dir_str[i] = d.replace("//", "/")
-            dir_str[i] = d.replace("~", os.environ['HOME'])
+            dir_str[i] = d.replace("~", os.path.expanduser("~"))
         return dir_str
 
     def _find_list(self, v: list, regex: str):
@@ -88,7 +88,7 @@ class System:
             pass
 
         with open(path, "w") as file:
-            print("Update of "+path)
+            print("Update of " + path)
             print("Please restart for load module.")
             file.write(str_data)
             exit()
